@@ -30,7 +30,7 @@ defineEmits<{
 }>();
 
 const buttonClasses = computed(() => {
-  const baseClasses = 'inline-flex items-center justify-center rounded-lg transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'border-2 inline-flex items-center justify-center rounded-lg transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed ';
   
   // Size classes
   const sizeClasses = {
@@ -41,10 +41,10 @@ const buttonClasses = computed(() => {
   
   // Variant classes
   const variantClasses = {
-    primary: 'bg-primary/100 text-white hover:bg-primary-dark',
-    secondary: 'bg-transparent text-primary border border-primary hover:bg-primary/5',
-    danger: 'bg-transparent border border-red-500 text-red-500 hover:bg-red-50',
-    dimmed: 'bg-stone-100 text-neutral-500 border border-stone-300 hover:bg-stone-200'
+    primary: 'bg-primary/100 border-primary text-white hover:bg-primary-dark',
+    secondary: 'bg-transparent text-primary border-primary hover:bg-primary/5',
+    danger: 'bg-transparent border-red-500 text-red-500 hover:bg-red-50',
+    dimmed: 'bg-stone-100 text-neutral-500 border-stone-300 hover:bg-stone-200'
   };
   
   return [
