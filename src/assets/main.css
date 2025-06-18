@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+@theme {
+  --color-primary: #F26B49;
+  --color-primary-dark: #E25B39;
+}
+
+/* 滾動條樣式 */
+.scrollbar-gutter-stable {
+  scrollbar-gutter: stable;
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
