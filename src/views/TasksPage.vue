@@ -8,6 +8,7 @@
             :tasks="taskStore.filteredTasks"
             @edit="handleTaskEdit"
             @complete="handleTaskComplete"
+            @reopen="handleTaskReopen"
         />
 
         <!-- Modals -->
@@ -113,10 +114,15 @@ const handleTaskEdit = (task: Task) => {
 };
 
 const handleTaskComplete = (taskId: number) => {
-    const task = taskStore.tasks.find((t) => t.id === taskId);
-    if (task) {
-        handleTaskToggleComplete(task);
-    }
+    taskStore.completeTask(taskId).catch(error => {
+        console.error('Failed to complete task:', error);
+    });
+};
+
+const handleTaskReopen = (taskId: number) => {
+    taskStore.reopenTask(taskId).catch(error => {
+        console.error('Failed to reopen task:', error);
+    });
 };
 
 // Lifecycle

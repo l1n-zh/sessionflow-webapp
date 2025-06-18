@@ -29,10 +29,7 @@
                     @click="toggleSort"
                 >
                     <span>截止時間</span>
-                    <BaseIcon
-                        :icon="ICONS.CHEVRON_UP"
-                        size="sm"
-                    />
+                    <BaseIcon :icon="ICONS.CHEVRON_UP" size="sm" />
                 </button>
             </div>
         </div>
@@ -41,13 +38,13 @@
         <TransitionGroup
             tag="div"
             name="task-list"
-            class="overflow-y-auto pt-2 no-scrollbar"
+            class="relative overflow-y-auto pt-2 no-scrollbar"
             :class="displayTasks.length > 0 ? 'flex-1' : 'h-0'"
         >
             <TaskItem
                 v-for="task in displayTasks"
                 :key="task.id"
-                :task="task"
+                :task="getTaskForDisplay(task)"
                 :is-active="activeTaskId === task.id"
                 :is-session-loading="sessionLoadingTaskId === task.id"
                 :is-complete-loading="completeLoadingTaskId === task.id"
@@ -56,6 +53,7 @@
                 @start-session="handleStartSession"
                 @end-session="handleEndSession"
                 @complete="handleComplete"
+                @reopen="handleReopen"
                 @edit="handleEdit"
             />
             <div key="bottom-spacer" class="h-16"></div>
@@ -78,7 +76,9 @@
             </div>
         </div>
 
-        <div class="absolute bottom-0 left-0 h-16 flex flex-col gap-2 w-full z-10 bg-linear-to-t from-stone-50 to-stone-50/0 from-60%">
+        <div
+            class="absolute bottom-0 left-0 h-16 flex flex-col gap-2 w-full z-10 bg-linear-to-t from-stone-50 to-stone-50/0 from-60%"
+        >
             <!-- 底部切換按鈕 -->
             <BaseButton
                 variant="dimmed"
@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, nextTick } from "vue";
 import type { Task } from "@/models/Task";
 import TaskItem from "./TaskItem.vue";
 import BaseButton from "@/components/atoms/BaseButton.vue";
@@ -116,12 +116,17 @@ const emit = defineEmits<{
     startSession: [taskId: number];
     endSession: [taskId: number];
     complete: [taskId: number];
+    reopen: [taskId: number];
     edit: [task: Task];
 }>();
 
 // 本地狀態
 const showCompleted = ref(false);
 const sortByDueDate = ref(false);
+// 追蹤正在進行動畫的任務ID和動畫類型
+const animatingTaskIds = ref<Map<number, "completing" | "reopening">>(
+    new Map()
+);
 
 const gridLayoutClass = computed(() => {
     return showCompleted.value
@@ -132,7 +137,19 @@ const gridLayoutClass = computed(() => {
 // 計算顯示的任務列表
 const displayTasks = computed(() => {
     // 根據完成狀態篩選
-    const filteredTasks = props.tasks.filter((task) => {
+    let filteredTasks = props.tasks.filter((task) => {
+        // 如果任務正在進行動畫，根據動畫類型決定顯示位置
+        if (animatingTaskIds.value.has(task.id)) {
+            const animationType = animatingTaskIds.value.get(task.id);
+            if (animationType === "completing") {
+                // completing動畫：保持在待完成列表直到動畫結束
+                return !showCompleted.value;
+            } else if (animationType === "reopening") {
+                // reopening動畫：保持在已完成列表直到動畫結束
+                return showCompleted.value;
+            }
+        }
+
         if (showCompleted.value) {
             return task.isComplete;
         } else {
@@ -149,9 +166,7 @@ const displayTasks = computed(() => {
             if (!b.dueTime) return -1;
 
             // 按截止時間由近到遠排序
-            return (
-                a.dueTime.getTime() - b.dueTime.getTime()
-            );
+            return a.dueTime.getTime() - b.dueTime.getTime();
         });
     }
 
@@ -189,12 +204,54 @@ const handleEndSession = (taskId: number) => {
     emit("endSession", taskId);
 };
 
-const handleComplete = (taskId: number) => {
+const handleComplete = async (taskId: number) => {
+    // 標記任務為completing動畫中
+    animatingTaskIds.value.set(taskId, "completing");
+
+    // 立即觸發完成操作
     emit("complete", taskId);
+
+    // 等待下一個tick確保DOM更新
+    await nextTick();
+
+    // 延遲移除動畫標記，讓動畫有時間完成
+    setTimeout(() => {
+        animatingTaskIds.value.delete(taskId);
+    }, 200);
+};
+
+const handleReopen = async (taskId: number) => {
+    animatingTaskIds.value.set(taskId, "reopening");
+    emit("reopen", taskId);
+    await nextTick();
+    setTimeout(() => {
+        animatingTaskIds.value.delete(taskId);
+    }, 200);
 };
 
 const handleEdit = (task: Task) => {
     emit("edit", task);
+};
+
+const getTaskForDisplay = (task: Task): Task => {
+    // 如果任務正在進行動畫，返回帶有原始狀態的任務副本
+    if (animatingTaskIds.value.has(task.id)) {
+        const animationType = animatingTaskIds.value.get(task.id);
+        // 創建任務副本，保持動畫前的狀態
+        const taskCopy = Object.create(Object.getPrototypeOf(task));
+        Object.assign(taskCopy, task);
+
+        if (animationType === "completing") {
+            // completing動畫：保持PENDING狀態，讓按鈕顯示完成圖標並播放擴散動畫
+            taskCopy.status = "PENDING";
+        } else if (animationType === "reopening") {
+            // reopening動畫：保持COMPLETE狀態，讓按鈕顯示重開圖標並播放旋轉動畫
+            taskCopy.status = "COMPLETE";
+        }
+
+        return taskCopy;
+    }
+    return task;
 };
 </script>
 
@@ -202,17 +259,27 @@ const handleEdit = (task: Task) => {
 .task-list-move,
 .task-list-enter-active,
 .task-list-leave-active {
-    transition: all 0.4s cubic-bezier(0.55, 0, 0.1, 1);
+    transition: all 0.4s ease-in-out;
 }
 
-.task-list-enter-from,
+.task-list-enter-from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+}
+
 .task-list-leave-to {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.95) translateY(-10px);
 }
 
 .task-list-leave-active {
     position: absolute;
-    width: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.task-list-move {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 </style>

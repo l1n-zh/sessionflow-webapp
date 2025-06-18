@@ -12,14 +12,13 @@
             @click.stop="handleComplete"
         />
 
-        <!-- 左側操作按鈕 -->
+        <!-- 右側操作按鈕 -->
         <ActionButton
             v-if="showActions"
-            :icon="sessionButtonIcon"
-            :variant="hasActiveSession ? 'primary' : 'secondary'"
+            :icon="ICONS.SESSION_START"
+            variant="secondary"
             size="md"
-            :loading="isSessionLoading"
-            @click.stop="handleSessionToggle"
+            @click.stop="handleSessionStart"
         />
 
         <!-- 任務標題 -->
@@ -62,30 +61,28 @@ import TaskCompleteButton from "@/components/molecules/TaskCompleteButton.vue";
 import BaseTag from "@/components/atoms/BaseTag.vue";
 import { formatDueDate } from "@/utils/dateFormatter";
 import { ICONS } from "@/constants/icons";
+import { useSessionModals } from '@/composables/useSessionModals';
 
 interface Props {
     task: Task;
     isActive?: boolean;
-    isSessionLoading?: boolean;
     isCompleteLoading?: boolean;
-    hasActiveSession?: boolean;
     showActions?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     isActive: false,
-    isSessionLoading: false,
     isCompleteLoading: false,
-    hasActiveSession: false,
     showActions: true,
 });
 
 const emit = defineEmits<{
-    startSession: [taskId: number];
-    endSession: [taskId: number];
     complete: [taskId: number];
+    reopen: [taskId: number];
     edit: [task: Task];
 }>();
+
+const { openCreateModal } = useSessionModals();
 
 // 計算樣式類別
 const layoutClasses = computed(() => {
@@ -100,10 +97,10 @@ const itemClasses = computed(() => {
         : "border-gray-200 hover:border-gray-300 hover:bg-primary/10 active:border-primary";
 });
 
-// Session 按鈕圖示
-const sessionButtonIcon = computed(() => {
-    return props.hasActiveSession ? ICONS.SESSION_END : ICONS.SESSION_START;
-});
+// Session 按鈕
+const handleSessionStart = () => {
+    openCreateModal(props.task);
+};
 
 // 截止日期格式化
 const formattedDueDate = computed(() => {
@@ -128,18 +125,13 @@ const dueDateClasses = computed(() => {
     return "text-neutral-600"; // 正常
 });
 
-// 處理 Session 開始/結束
-const handleSessionToggle = () => {
-    if (props.hasActiveSession) {
-        emit("endSession", props.task.id);
-    } else {
-        emit("startSession", props.task.id);
-    }
-};
-
-// 處理任務完成
+// 處理任務完成/重開
 const handleComplete = () => {
-    emit("complete", props.task.id);
+    if (props.task.isComplete) {
+        emit("reopen", props.task.id);
+    } else {
+        emit("complete", props.task.id);
+    }
 };
 
 // 處理點擊任務項目
