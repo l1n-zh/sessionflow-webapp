@@ -24,6 +24,7 @@
             :is-submitting="isSubmitting"
             @close="closeEditModal"
             @submit="handleUpdateTaskSubmit"
+            @delete="openDeleteModal(selectedTask!)"
         />
 
         <TaskDeleteConfirm

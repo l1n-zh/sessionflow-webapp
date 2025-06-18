@@ -15,18 +15,38 @@
     />
     
     <template #footer>
-      <BaseButton
-        variant="secondary"
-        @click="$emit('close')"
-      >
-        取消
-      </BaseButton>
-      <BaseButton
-        :loading="isSubmitting"
-        @click="submitForm"
-      >
-        {{ submitButtonText }}
-      </BaseButton>
+      <div class="flex w-full items-center justify-between">
+        <!-- Delete Button -->
+        <BaseButton
+          v-if="isEdit"
+          type="button"
+          variant="danger"
+          @click="$emit('delete')"
+        >
+          <BaseIcon :icon="ICONS.DELETE" />
+          <span class="ml-2">刪除</span>
+        </BaseButton>
+
+        <!-- Spacer to push buttons to the right when delete is not visible -->
+        <div v-else></div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-3">
+          <BaseButton
+            type="button"
+            variant="secondary"
+            @click="$emit('close')"
+          >
+            取消
+          </BaseButton>
+          <BaseButton
+            :loading="isSubmitting"
+            @click="submitForm"
+          >
+            {{ submitButtonText }}
+          </BaseButton>
+        </div>
+      </div>
     </template>
   </BaseModal>
 </template>
@@ -35,6 +55,8 @@
 import { ref, computed } from 'vue';
 import BaseModal from '@/components/molecules/BaseModal.vue';
 import BaseButton from '@/components/atoms/BaseButton.vue';
+import BaseIcon from '@/components/atoms/BaseIcon.vue';
+import { ICONS } from '@/constants/icons';
 import TaskForm from '@/components/organisms/TaskForm.vue';
 import type { Task } from '@/models/Task';
 import type { TaskFormData } from '@/types/ui/forms';
@@ -52,6 +74,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   close: [];
   submit: [data: TaskFormData];
+  delete: [];
 }>();
 
 const taskFormRef = ref<InstanceType<typeof TaskForm>>();

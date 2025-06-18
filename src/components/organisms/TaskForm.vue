@@ -47,26 +47,28 @@
       help="最多 2000 字元"
     />
 
-    <!-- Actions -->
-    <div 
-      v-if="!hideActions"
-      class="flex items-center justify-end gap-3 pt-4 border-t border-neutral-300"
-    >
-      <BaseButton
-        type="button"
-        variant="secondary"
-        @click="$emit('cancel')"
+    <!-- Actions slot -->
+    <slot name="footer">
+      <div 
+        v-if="!hideActions"
+        class="flex items-center justify-end gap-3 pt-4 border-t border-neutral-300"
       >
-        取消
-      </BaseButton>
-      <BaseButton
-        type="submit"
-        :loading="isSubmitting"
-        :disabled="!isFormValid"
-      >
-        {{ isEdit ? '更新任務' : '建立任務' }}
-      </BaseButton>
-    </div>
+        <BaseButton
+          type="button"
+          variant="secondary"
+          @click="$emit('cancel')"
+        >
+          取消
+        </BaseButton>
+        <BaseButton
+          type="submit"
+          :loading="isSubmitting"
+          :disabled="!isFormValid"
+        >
+          {{ isEdit ? '更新任務' : '建立任務' }}
+        </BaseButton>
+      </div>
+    </slot>
   </form>
 
   <!-- Tag Modals -->
@@ -124,6 +126,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   submit: [data: TaskFormData];
   cancel: [];
+  delete: [];
 }>();
 
 const tagStore = useTagStore();

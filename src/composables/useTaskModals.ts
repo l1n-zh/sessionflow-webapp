@@ -32,6 +32,7 @@ export function useTaskModals() {
 
   const closeDeleteModal = () => {
     showDeleteModal.value = false;
+    showEditModal.value = false;
     selectedTask.value = undefined;
   };
 
