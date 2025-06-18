@@ -11,52 +11,18 @@
     />
 
     <!-- Tags -->
-    <div class="space-y-2">
-      <label class="block text-md text-neutral-700">
-        標籤
-      </label>
-      <div class="space-y-3">
-        <!-- Selected tags -->
-        <div v-if="selectedTags.length > 0" class="flex flex-wrap gap-2">
-          <BaseTag
-            v-for="tag in selectedTags"
-            :key="tag.id"
-            :id="tag.id"
-            :name="tag.name"
-            :color="tag.color"
-            removable
-            @remove="removeTag"
-          />
-        </div>
-        
-        <!-- Tag selector -->
-        <div class="flex flex-wrap gap-2">
-          <button
-            v-for="tag in availableTags"
-            :key="tag.id"
-            type="button"
-            class="inline-flex items-center px-3 py-1 rounded-full text-sm border border-neutral-300 hover:border-primary hover:bg-primary/5 transition-colors"
-            @click="addTag(tag)"
-          >
-            <span 
-              class="w-3 h-3 rounded-full mr-2"
-              :style="{ backgroundColor: tag.color }"
-            ></span>
-            {{ tag.name }}
-          </button>
-          <!-- 新增標籤按鈕 -->
-          <!-- TODO: add tags Modal 彈窗 -->
-          <ActionButton
-            variant="outline"
-            size="sm"
-            :icon="ICONS.ADD"
-            @click="void(0)"
-            title="新增標籤"
-          >
-          </ActionButton>
-        </div>
-      </div>
-    </div>
+    <FormField
+      id="tags"
+      label="標籤"
+    >
+      <TagInput
+        :selected-tags="selectedTags"
+        :available-tags="availableTags"
+        @add-tag="addTag"
+        @remove-tag="tag => removeTag(tag.id)"
+        @create-new="isCreateTagModalOpen = true"
+      />
+    </FormField>
 
     <!-- Due Date -->
     <FormField
@@ -101,19 +67,25 @@
       </BaseButton>
     </div>
   </form>
+  <TagCreateModal
+    :show="isCreateTagModalOpen"
+    :is-submitting="tagStore.isCreating"
+    @close="isCreateTagModalOpen = false"
+    @create="handleCreateTag"
+  />
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import FormField from '@/components/molecules/FormField.vue';
 import BaseButton from '@/components/atoms/BaseButton.vue';
-import BaseTag from '@/components/atoms/BaseTag.vue';
-import ActionButton from '@/components/atoms/ActionButton.vue';
+import TagInput from '@/components/molecules/TagInput.vue';
+import TagCreateModal from '@/components/organisms/TagCreateModal.vue';
 import { useTagStore } from '@/store/tags';
 import { useTaskForm } from '@/composables/useTaskForm';
 import { useTagSelection } from '@/composables/useTagSelection';
-import type { TaskResponse, TaskFormData } from '@/types';
-import { ICONS } from '@/constants/icons';
+import type { TaskResponse } from '@/types/api/task';
+import type { TaskFormData, TagCreateFormData } from '@/types/ui/forms';
 
 interface Props {
   task?: TaskResponse;
@@ -148,6 +120,18 @@ const {
   addTag,
   removeTag
 } = useTagSelection(formData);
+
+const isCreateTagModalOpen = ref(false);
+
+const handleCreateTag = async (data: TagCreateFormData) => {
+  const newTag = await tagStore.createTag({
+    name: data.name,
+    color: data.color || '#e5e7eb' // Default to gray-200 if not provided
+  });
+  if (newTag) {
+    isCreateTagModalOpen.value = false;
+  }
+};
 
 // Methods
 const submitForm = () => {

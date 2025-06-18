@@ -10,23 +10,28 @@
       <span v-if="required" class="text-red-500 ml-1">*</span>
     </label>
     
-    <!-- Input -->
-    <BaseInput
-      :id="id"
-      :model-value="modelValue"
-      :type="type"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      :error="error"
-      :multiline="multiline"
-      :rows="rows"
-      @update:model-value="$emit('update:modelValue', $event)"
-      @blur="$emit('blur', $event)"
-      @focus="$emit('focus', $event)"
-    />
+    <!-- Input field or slot -->
+    <slot>
+      <BaseInput
+        :id="id"
+        :model-value="modelValue"
+        :type="type"
+        :placeholder="placeholder"
+        :disabled="disabled"
+        :error="!!error"
+        :multiline="multiline"
+        :rows="rows"
+        @update:model-value="$emit('update:modelValue', $event)"
+        @blur="$emit('blur', $event)"
+        @focus="$emit('focus', $event)"
+      />
+    </slot>
     
-    <!-- Help text -->
-    <p v-if="help && !error" class="text-sm text-neutral-500">
+    <!-- Error & Help Text -->
+    <p v-if="error" class="text-sm text-red-500">
+      {{ error }}
+    </p>
+    <p v-else-if="help" class="text-sm text-neutral-500">
       {{ help }}
     </p>
   </div>

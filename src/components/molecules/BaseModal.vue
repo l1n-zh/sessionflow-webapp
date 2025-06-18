@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue';
-import type { ModalProps } from '@/types';
+import type { ModalProps } from '@/types/ui/components';
 import BaseIcon from '@/components/atoms/BaseIcon.vue';
 import { ICONS } from '@/constants/icons';
 

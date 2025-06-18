@@ -24,9 +24,6 @@
       @blur="$emit('blur', $event)"
       @focus="$emit('focus', $event)"
     />
-    <p v-if="error" class="mt-1 text-sm text-red-500">
-      {{ error }}
-    </p>
   </div>
 </template>
 
@@ -39,7 +36,7 @@ interface Props {
   type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'datetime-local';
   placeholder?: string;
   disabled?: boolean;
-  error?: string;
+  error?: boolean;
   multiline?: boolean;
   rows?: number;
 }

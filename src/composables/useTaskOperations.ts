@@ -1,6 +1,9 @@
 import { ref } from 'vue';
 import { useTaskStore } from '@/store/tasks';
-import type { TaskResponse, TaskFormData } from '@/types';
+import type { TaskResponse } from '@/types/api/task';
+import type { TaskFormData } from '@/types/ui/forms';
+import { useTaskModals } from './useTaskModals';
+import { useRouter } from 'vue-router';
 
 export function useTaskOperations() {
   const taskStore = useTaskStore();

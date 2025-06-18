@@ -1,6 +1,7 @@
 /**
  * 統一的 Icon 常數定義
- * 使用 FontAwesome 作為主要 icon 集
+ * 使用 FontAwesome 作為主要 icon 集，
+ * 使用 Material Design Icons 作為輔助 icon 集
  */
 
 export const ICONS = {
@@ -38,6 +39,8 @@ export const ICONS = {
   
   // 其他
   ADD: 'fa-solid fa-plus',
+  TRIANGLE_UP: 'mdi:mdi-triangle-up',
+  TRIANGLE_DOWN: 'mdi:mdi-triangle-down',
   SEARCH: 'fa-solid fa-magnifying-glass',
   FILTER: 'fa-solid fa-filter',
   SETTINGS: 'fa-solid fa-gear',

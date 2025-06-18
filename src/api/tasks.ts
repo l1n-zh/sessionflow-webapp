@@ -1,5 +1,5 @@
-import { api } from './index';
-import type { TaskResponse, TaskRequest } from '@/types';
+import type { TaskResponse, TaskRequest } from '@/types/api/task';
+import { api } from '.';
 
 export const taskApi = {
   // Get all tasks with optional status filter
@@ -16,7 +16,7 @@ export const taskApi = {
   },
 
   // Update an existing task
-  async updateTask(id: number, task: TaskRequest): Promise<TaskResponse> {
+  async updateTask(id: number, task: Partial<TaskRequest>): Promise<TaskResponse> {
     const response = await api.put(`/tasks/${id}`, task);
     return response.data;
   },

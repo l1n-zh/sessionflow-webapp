@@ -1,5 +1,5 @@
-import { api } from './index';
-import type { ScheduleEntryResponse, ScheduleEntryRequest } from '@/types';
+import type { ScheduleEntryResponse, ScheduleEntryRequest } from '@/types/api/schedule';
+import { api } from '.';
 
 export const scheduleApi = {
   // Get schedule entries within date range
@@ -11,19 +11,15 @@ export const scheduleApi = {
   },
 
   // Create a new schedule entry
-  async createScheduleEntry(entry: ScheduleEntryRequest): Promise<ScheduleEntryResponse> {
-    const response = await api.post('/schedule-entries', entry);
-    return response.data;
-  },
+  createScheduleEntry: (data: ScheduleEntryRequest): Promise<ScheduleEntryResponse> => api.post('/schedule-entries', data),
 
   // Update an existing schedule entry
-  async updateScheduleEntry(id: number, entry: ScheduleEntryRequest): Promise<ScheduleEntryResponse> {
-    const response = await api.put(`/schedule-entries/${id}`, entry);
-    return response.data;
-  },
+  updateScheduleEntry: (id: number, data: ScheduleEntryRequest): Promise<ScheduleEntryResponse> => api.put(`/schedule-entries/${id}`, data),
 
   // Delete a schedule entry
-  async deleteScheduleEntry(id: number): Promise<void> {
+  deleteScheduleEntry: async (id: number): Promise<void> => {
     await api.delete(`/schedule-entries/${id}`);
-  }
+  },
+
+  getSchedules: (): Promise<ScheduleEntryResponse[]> => api.get('/schedules')
 }; 

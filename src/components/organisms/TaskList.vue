@@ -25,16 +25,13 @@
             <!-- 截止時間欄位（可點擊排序） -->
             <div class="min-w-0">
                 <button
-                    class="hover:text-gray-900 transition-colors flex items-center gap-1"
+                    class="hover:text-neutral-800 transition-colors flex items-center gap-1"
                     @click="toggleSort"
                 >
                     <span>截止時間</span>
                     <BaseIcon
                         :icon="ICONS.CHEVRON_UP"
-                        size="2xs"
-                        :class="
-                            sortByDueDate ? 'text-primary' : 'text-neutral-400'
-                        "
+                        size="sm"
                     />
                 </button>
             </div>
@@ -97,7 +94,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { TaskResponse } from "@/types";
+import type { TaskResponse } from "@/types/api/task";
 import TaskItem from "./TaskItem.vue";
 import BaseButton from "@/components/atoms/BaseButton.vue";
 import BaseIcon from "@/components/atoms/BaseIcon.vue";

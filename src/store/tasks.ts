@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
+import type { TaskResponse, TaskRequest } from '@/types/api/task';
+import type { TagResponse } from '@/types/api/tag';
+import type { TaskFilter } from '@/types/ui/forms';
+import type { TaskStatus } from '@/types/utility';
 import { taskApi } from '@/api/tasks';
-import type { TaskResponse, TaskRequest, TaskFilter, TaskStatus } from '@/types';
+import { useTagStore } from './tags';
 
 export const useTaskStore = defineStore('tasks', () => {
   // State
@@ -70,30 +74,30 @@ export const useTaskStore = defineStore('tasks', () => {
       isLoading.value = true;
       error.value = '';
       const newTask = await taskApi.createTask(taskData);
-      tasks.value.unshift(newTask);
+      tasks.value.push(newTask);
       return newTask;
     } catch (err) {
       error.value = err instanceof Error ? err.message : '建立任務失敗';
-      console.error('Failed to create task:', err);
+      console.error(err);
       throw err;
     } finally {
       isLoading.value = false;
     }
   };
 
-  const updateTask = async (id: number, taskData: TaskRequest) => {
+  const updateTask = async (id: number, taskData: Partial<TaskRequest>) => {
     try {
       isLoading.value = true;
       error.value = '';
       const updatedTask = await taskApi.updateTask(id, taskData);
-      const index = tasks.value.findIndex(task => task.id === id);
+      const index = tasks.value.findIndex(t => t.id === id);
       if (index !== -1) {
         tasks.value[index] = updatedTask;
       }
       return updatedTask;
     } catch (err) {
       error.value = err instanceof Error ? err.message : '更新任務失敗';
-      console.error('Failed to update task:', err);
+      console.error(err);
       throw err;
     } finally {
       isLoading.value = false;
@@ -105,10 +109,10 @@ export const useTaskStore = defineStore('tasks', () => {
       isLoading.value = true;
       error.value = '';
       await taskApi.deleteTask(id);
-      tasks.value = tasks.value.filter(task => task.id !== id);
+      tasks.value = tasks.value.filter(t => t.id !== id);
     } catch (err) {
       error.value = err instanceof Error ? err.message : '刪除任務失敗';
-      console.error('Failed to delete task:', err);
+      console.error(err);
       throw err;
     } finally {
       isLoading.value = false;

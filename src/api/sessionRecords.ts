@@ -1,5 +1,5 @@
-import { api } from './index';
-import type { SessionRecordResponse, SessionRecordUpdateRequest } from '@/types';
+import type { SessionRecordResponse, SessionRecordUpdateRequest } from '@/types/api/sessionRecord';
+import { api } from '.';
 
 export const sessionRecordApi = {
   // Get session records with optional filters

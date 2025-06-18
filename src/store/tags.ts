@@ -1,17 +1,19 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { tagApi } from '@/api/tags';
-import type { TagResponse, TagRequest } from '@/types';
+import type { TagResponse, TagRequest } from '@/types/api/tag';
+import { Tag } from '@/models/Tag';
 
 export const useTagStore = defineStore('tags', () => {
   // State
-  const tags = ref<TagResponse[]>([]);
+  const tags = ref<Tag[]>([]);
   const isLoading = ref(false);
+  const isCreating = ref(false);
   const error = ref<string>('');
 
   // Getters
   const tagMap = computed(() => {
-    const map = new Map<number, TagResponse>();
+    const map = new Map<number, Tag>();
     tags.value.forEach(tag => map.set(tag.id, tag));
     return map;
   });
@@ -37,7 +39,7 @@ export const useTagStore = defineStore('tags', () => {
       isLoading.value = true;
       error.value = '';
       const data = await tagApi.getTags();
-      tags.value = data;
+      tags.value = data.map(dto => new Tag(dto));
     } catch (err) {
       error.value = err instanceof Error ? err.message : '載入標籤失敗';
       console.error('Failed to fetch tags:', err);
@@ -48,9 +50,10 @@ export const useTagStore = defineStore('tags', () => {
 
   const createTag = async (tagData: TagRequest) => {
     try {
-      isLoading.value = true;
+      isCreating.value = true;
       error.value = '';
-      const newTag = await tagApi.createTag(tagData);
+      const newTagResponse = await tagApi.createTag(tagData);
+      const newTag = new Tag(newTagResponse);
       tags.value.push(newTag);
       return newTag;
     } catch (err) {
@@ -58,7 +61,7 @@ export const useTagStore = defineStore('tags', () => {
       console.error('Failed to create tag:', err);
       throw err;
     } finally {
-      isLoading.value = false;
+      isCreating.value = false;
     }
   };
 
@@ -66,7 +69,8 @@ export const useTagStore = defineStore('tags', () => {
     try {
       isLoading.value = true;
       error.value = '';
-      const updatedTag = await tagApi.updateTag(id, tagData);
+      const updatedTagResponse = await tagApi.updateTag(id, tagData);
+      const updatedTag = new Tag(updatedTagResponse);
       const index = tags.value.findIndex(tag => tag.id === id);
       if (index !== -1) {
         tags.value[index] = updatedTag;
@@ -120,6 +124,7 @@ export const useTagStore = defineStore('tags', () => {
     // State
     tags,
     isLoading,
+    isCreating,
     error,
     
     // Getters

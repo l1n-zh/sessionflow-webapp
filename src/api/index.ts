@@ -1,8 +1,8 @@
-import axios from 'axios';
-import type { ErrorResponse } from '@/types';
+import type { ErrorResponse } from '@/types/api/error';
+import axios, { type AxiosInstance, type AxiosError } from 'axios';
 
 // Create axios instance
-export const api = axios.create({
+const api: AxiosInstance = axios.create({
   baseURL: '/api',
   timeout: 10000,
   headers: {
@@ -48,4 +48,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api; 
+export { api }; 

@@ -1,27 +1,30 @@
 import { computed, type Ref } from 'vue';
 import { useTagStore } from '@/store/tags';
-import type { TagResponse, TaskFormData } from '@/types';
+import type { TaskFormData } from '@/types/ui/forms';
+import type { TagProps } from '@/types/ui/components';
 
 export function useTagSelection(formData: Ref<TaskFormData>) {
   const tagStore = useTagStore();
 
-  const selectedTags = computed(() => 
+  const selectedTags = computed<TagProps[]>(() =>
     tagStore.tags.filter(tag => formData.value.tagIds.includes(tag.id))
+      .map(tag => ({ ...tag }))
   );
 
-  const availableTags = computed(() => 
+  const availableTags = computed<TagProps[]>(() =>
     tagStore.tags.filter(tag => !formData.value.tagIds.includes(tag.id))
+      .map(tag => ({ ...tag }))
   );
 
   // Methods
-  const addTag = (tag: TagResponse) => {
-    if (!formData.value.tagIds.includes(tag.id)) {
+  const addTag = (tag: TagProps) => {
+    if (tag.id && !formData.value.tagIds.includes(tag.id)) {
       formData.value.tagIds.push(tag.id);
     }
   };
 
   const removeTag = (tagId?: number) => {
-    if (tagId) {
+    if (tagId !== undefined) {
       formData.value.tagIds = formData.value.tagIds.filter(id => id !== tagId);
     }
   };

@@ -58,7 +58,8 @@ import TaskList from "@/components/organisms/TaskList.vue";
 import TaskModal from "@/components/organisms/TaskModal.vue";
 import TaskDeleteConfirm from "@/components/organisms/TaskDeleteConfirm.vue";
 import { ICONS } from "@/constants/icons";
-import type { TaskResponse, TaskFormData } from "@/types";
+import type { TaskResponse } from "@/types/api/task";
+import type { TaskFormData } from "@/types/ui/forms";
 
 const taskStore = useTaskStore();
 const tagStore = useTagStore();

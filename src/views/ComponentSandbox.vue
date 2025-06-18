@@ -101,7 +101,7 @@
               <h4 class="text-sm font-medium text-neutral-700 mb-3">狀態 (States)</h4>
               <div class="space-y-3">
                 <BaseInput placeholder="正常狀態" />
-                <BaseInput placeholder="錯誤狀態" error="這是錯誤訊息" />
+                <BaseInput placeholder="錯誤狀態" :error="true" />
                 <BaseInput placeholder="禁用狀態" :disabled="true" />
               </div>
             </div>
@@ -248,17 +248,18 @@
                   help="我們不會分享您的電子郵件"
                 />
                 <FormField
-                  label="備註"
-                  v-model="sampleData.note"
-                  multiline
-                  :rows="3"
-                  placeholder="請輸入備註"
+                  label="密碼"
+                  type="password"
+                  v-model="sampleData.password"
+                  placeholder="請輸入密碼"
+                  error="密碼長度不足"
                 />
                 <FormField
-                  label="錯誤示例"
-                  v-model="sampleData.error"
-                  placeholder="這個欄位有錯誤"
-                  error="這是錯誤訊息"
+                  label="備註"
+                  v-model="sampleData.notes"
+                  placeholder="請輸入備註"
+                  multiline
+                  :rows="4"
                 />
               </div>
             </div>
@@ -436,7 +437,7 @@ import TaskItem from '@/components/organisms/TaskItem.vue';
 import TaskList from '@/components/organisms/TaskList.vue';
 import TaskModal from '@/components/organisms/TaskModal.vue';
 import TaskDeleteConfirm from '@/components/organisms/TaskDeleteConfirm.vue';
-import type { TaskResponse } from '@/types';
+import type { TaskResponse } from '@/types/api/task';
 
 // State
 const selectedCategory = ref<string>('all');
@@ -453,8 +454,9 @@ const showTaskDeleteModal = ref(false);
 const sampleData = ref({
   name: '',
   email: '',
-  note: '',
-  error: ''
+  password: '123',
+  notes: '',
+  tags: []
 });
 
 // Categories
@@ -481,30 +483,24 @@ const sampleTasks: Record<string, TaskResponse> = {
     id: 1,
     title: '完成專案文件',
     tags: [
-      { id: 1, name: '工作', color: '#fecaca' },
-      { id: 2, name: '重要', color: '#fed7aa' }
+      { id: 1, name: '工作', color: '#3b82f6' },
+      { id: 2, name: '重要', color: '#ef4444' }
     ],
-    dueTime: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
-    note: '需要完成所有的技術文件和使用者手冊',
-    status: 'PENDING' as const
+    status: 'PENDING'
   },
   completed: {
     id: 2,
     title: '設計系統建立',
-    tags: [
-      { id: 3, name: '設計', color: '#d9f99d' }
-    ],
-    completedAt: new Date().toISOString(),
-    note: '建立完整的設計系統和元件庫',
-    status: 'COMPLETE' as const
+    tags: [{ id: 3, name: '設計', color: '#a855f7' }],
+    status: 'COMPLETE',
+    completedAt: '2023-10-25T10:00:00Z'
   },
   withDueDate: {
     id: 3,
     title: '逾期任務示例',
     tags: [],
-    dueTime: new Date(Date.now() - 86400000).toISOString(), // Yesterday
-    note: '這是一個逾期的任務示例',
-    status: 'PENDING' as const
+    dueTime: '2023-01-01T12:00:00Z',
+    status: 'PENDING'
   }
 };
 

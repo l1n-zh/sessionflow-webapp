@@ -1,5 +1,5 @@
+import type { TaskResponse } from '@/types/api/task';
 import { ref } from 'vue';
-import type { TaskResponse } from '@/types';
 
 export function useTaskModals() {
   const showCreateModal = ref(false);

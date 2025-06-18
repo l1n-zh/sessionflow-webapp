@@ -15,9 +15,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { TagProps } from '@/types';
-import BaseIcon from './BaseIcon.vue';
+import BaseIcon from '@/components/atoms/BaseIcon.vue';
 import { ICONS } from '@/constants/icons';
+import type { TagProps } from '@/types/ui/components';
 
 interface Props extends TagProps {}
 

@@ -1,5 +1,5 @@
-import { api } from './index';
-import type { TagResponse, TagRequest } from '@/types';
+import type { TagResponse, TagRequest } from '@/types/api/tag';
+import { api } from '.';
 
 export const tagApi = {
   // Get all tags

@@ -53,7 +53,7 @@ import BaseModal from '@/components/molecules/BaseModal.vue';
 import BaseButton from '@/components/atoms/BaseButton.vue';
 import BaseIcon from '@/components/atoms/BaseIcon.vue';
 import { ICONS } from '@/constants/icons';
-import type { TaskResponse } from '@/types';
+import type { TaskResponse } from '@/types/api/task';
 
 interface Props {
   show: boolean;

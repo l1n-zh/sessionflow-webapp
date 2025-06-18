@@ -1,7 +1,8 @@
+import type { TaskResponse } from '@/types/api/task';
+import type { TaskFormData } from '@/types/ui/forms';
 import { ref, computed, watch } from 'vue';
-import type { TaskResponse, TaskFormData } from '@/types';
 
-export function useTaskForm(task?: TaskResponse) {
+export function useTaskForm(initialTask?: TaskResponse) {
   // Form data
   const formData = ref<TaskFormData>({
     title: '',
@@ -13,7 +14,7 @@ export function useTaskForm(task?: TaskResponse) {
   // Form validation
   const errors = ref<Record<string, string>>({});
 
-  const isEdit = computed(() => !!task);
+  const isEdit = computed(() => !!initialTask);
 
   const isFormValid = computed(() => {
     return formData.value.title.trim().length > 0 && Object.keys(errors.value).length === 0;
@@ -58,12 +59,12 @@ export function useTaskForm(task?: TaskResponse) {
 
   // Initialize form data
   const initializeForm = () => {
-    if (task) {
+    if (initialTask) {
       formData.value = {
-        title: task.title,
-        tagIds: task.tags.map(tag => tag.id),
-        dueTime: task.dueTime ? new Date(task.dueTime).toISOString().slice(0, 16) : '',
-        note: task.note || ''
+        title: initialTask.title,
+        tagIds: initialTask.tags.map(tag => tag.id),
+        dueTime: initialTask.dueTime ? new Date(initialTask.dueTime).toISOString().slice(0, 16) : '',
+        note: initialTask.note || ''
       };
     } else {
       formData.value = {
@@ -77,7 +78,7 @@ export function useTaskForm(task?: TaskResponse) {
   };
 
   // Watch for task changes
-  watch(() => task, initializeForm, { immediate: true });
+  watch(() => initialTask, initializeForm, { immediate: true });
 
   return {
     formData,

@@ -14,13 +14,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { ButtonProps } from '@/types';
+import type { ButtonProps } from '@/types/ui/components';
 import BaseIcon from './BaseIcon.vue';
 import { ICONS } from '@/constants/icons';
 
-interface Props extends ButtonProps {}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ButtonProps>(), {
   variant: 'primary',
   size: 'md',
   loading: false,

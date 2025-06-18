@@ -1,5 +1,6 @@
-import { api } from './index';
-import type { SessionResponse, SessionRequest, SessionRecordCreateRequest, SessionRecordResponse } from '@/types';
+import type { SessionResponse, SessionRequest } from '@/types/api/session';
+import type { SessionRecordCreateRequest, SessionRecordResponse } from '@/types/api/sessionRecord';
+import { api } from '.';
 
 export const sessionApi = {
   // Get all active sessions
