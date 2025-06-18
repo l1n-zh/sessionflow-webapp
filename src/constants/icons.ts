@@ -36,14 +36,15 @@ export const ICONS = {
   
   // UI 控制
   CHEVRON_UP: 'fa-solid fa-chevron-up',
-  
-  // 其他
   ADD: 'fa-solid fa-plus',
   TRIANGLE_UP: 'mdi:mdi-triangle-up',
   TRIANGLE_DOWN: 'mdi:mdi-triangle-down',
   SEARCH: 'fa-solid fa-magnifying-glass',
   FILTER: 'fa-solid fa-filter',
   SETTINGS: 'fa-solid fa-gear',
+  CHECK: 'fa-solid fa-check',
+  EDIT: 'fa-solid fa-pen-to-square',
+  DELETE: 'fa-solid fa-trash',
 } as const;
 
 export type IconName = typeof ICONS[keyof typeof ICONS]; 

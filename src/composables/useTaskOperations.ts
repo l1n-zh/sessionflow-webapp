@@ -1,17 +1,15 @@
 import { ref } from 'vue';
 import { useTaskStore } from '@/store/tasks';
-import type { TaskResponse } from '@/types/api/task';
+import { Task } from '@/models/Task';
 import type { TaskFormData } from '@/types/ui/forms';
-import { useTaskModals } from './useTaskModals';
-import { useRouter } from 'vue-router';
 
 export function useTaskOperations() {
   const taskStore = useTaskStore();
   const isSubmitting = ref(false);
 
-  const handleTaskToggleComplete = async (task: TaskResponse) => {
+  const handleTaskToggleComplete = async (task: Task) => {
     try {
-      if (task.status === 'PENDING') {
+      if (!task.isComplete) {
         await taskStore.completeTask(task.id);
       } else {
         await taskStore.reopenTask(task.id);

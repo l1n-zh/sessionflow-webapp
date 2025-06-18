@@ -16,6 +16,12 @@ export interface TagCreateFormData {
   color?: string;
 }
 
+export interface TagUpdateFormData {
+  id: number;
+  name: string;
+  color: string;
+}
+
 // Filter Types
 export interface TaskFilter {
   status?: 'PENDING' | 'COMPLETE' | 'ALL';

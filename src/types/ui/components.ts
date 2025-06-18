@@ -6,14 +6,6 @@ export interface ButtonProps {
   disabled?: boolean;
 }
 
-export interface TagProps {
-  id?: number;
-  name: string;
-  color: string;
-  removable?: boolean;
-  size?: 'sm' | 'md' | 'lg';
-}
-
 export interface ModalProps {
   show: boolean;
   title?: string;

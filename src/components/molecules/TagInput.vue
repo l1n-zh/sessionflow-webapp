@@ -2,7 +2,7 @@
   <div class="relative" ref="rootEl">
     <div
       @click="toggleDropdown"
-      class="block w-full min-h-[42px] p-2 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white border-stone-300 text-neutral-700 placeholder-neutral-400 flex flex-wrap gap-2 items-center cursor-text"
+      class="w-full min-h-[42px] p-2 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white border-stone-300 text-neutral-700 placeholder-neutral-400 flex flex-wrap gap-2 items-center cursor-text"
       :class="{ 'ring-2 ring-primary border-transparent': isOpen }"
       tabindex="0"
     >
@@ -12,7 +12,9 @@
         :name="tag.name"
         :color="tag.color"
         removable
-        @remove.stop="onRemoveTag(tag)"
+        @remove="onRemoveTag(tag)"
+        @click="onEditTag(tag)"
+        class="cursor-pointer hover:opacity-80 transition-opacity"
       />
       <span v-if="selectedTags.length === 0" class="text-neutral-400">
         選擇標籤...
@@ -27,8 +29,8 @@
       leave-from-class="opacity-100"
       leave-to-class="opacity-0"
     >
-      <div v-if="isOpen" class="absolute z-10 w-full mt-1 bg-white border border-stone-300 rounded-lg shadow-lg">
-        <ul class="max-h-60 overflow-y-auto py-1">
+      <div v-if="isOpen" class="absolute z-10 w-full mt-1 bg-white border border-stone-300 rounded-lg shadow-lg no-scrollbar">
+        <ul class="max-h-60 overflow-y-auto py-1 no-scrollbar">
           <li v-if="availableTags.length === 0" class="px-3 py-2 text-neutral-500 text-sm">
             沒有可用的標籤
           </li>
@@ -53,17 +55,18 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import BaseTag from '@/components/atoms/BaseTag.vue';
-import type { TagProps } from '@/types/ui/components';
+import type { Tag } from '@/models/Tag';
 
 defineProps<{
-  selectedTags: TagProps[];
-  availableTags: TagProps[];
+  selectedTags: Tag[];
+  availableTags: Tag[];
 }>();
 
 const emit = defineEmits<{
-  (e: 'add-tag', tag: TagProps): void;
-  (e: 'remove-tag', tag: TagProps): void;
+  (e: 'add-tag', tag: Tag): void;
+  (e: 'remove-tag', tag: Tag): void;
   (e: 'create-new'): void;
+  (e: 'edit-tag', tag: Tag): void;
 }>();
 
 const rootEl = ref<HTMLElement | null>(null);
@@ -77,13 +80,17 @@ const closeDropdown = () => {
   isOpen.value = false;
 };
 
-const onAddTag = (tag: TagProps) => {
+const onAddTag = (tag: Tag) => {
   emit('add-tag', tag);
 };
 
-const onRemoveTag = (tag: TagProps) => {
+const onRemoveTag = (tag: Tag) => {
   emit('remove-tag', tag);
 };
+
+const onEditTag = (tag: Tag) => {
+  emit('edit-tag', tag);
+}
 
 const onCreateNew = () => {
   emit('create-new');

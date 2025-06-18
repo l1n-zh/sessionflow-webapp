@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
+import { Task } from '@/models/Task';
 import type { TaskResponse, TaskRequest } from '@/types/api/task';
 import type { TagResponse } from '@/types/api/tag';
 import type { TaskFilter } from '@/types/ui/forms';
@@ -9,7 +10,7 @@ import { useTagStore } from './tags';
 
 export const useTaskStore = defineStore('tasks', () => {
   // State
-  const tasks = ref<TaskResponse[]>([]);
+  const tasks = ref<Task[]>([]);
   const isLoading = ref(false);
   const error = ref<string>('');
   const filter = ref<TaskFilter>({
@@ -39,7 +40,7 @@ export const useTaskStore = defineStore('tasks', () => {
       const searchLower = filter.value.search.toLowerCase();
       filtered = filtered.filter(task => 
         task.title.toLowerCase().includes(searchLower) ||
-        task.note?.toLowerCase().includes(searchLower)
+        (task.note && task.note.toLowerCase().includes(searchLower))
       );
     }
 
@@ -47,11 +48,11 @@ export const useTaskStore = defineStore('tasks', () => {
   });
 
   const pendingTasks = computed(() => 
-    tasks.value.filter(task => task.status === 'PENDING')
+    tasks.value.filter(task => !task.isComplete)
   );
 
   const completedTasks = computed(() => 
-    tasks.value.filter(task => task.status === 'COMPLETE')
+    tasks.value.filter(task => task.isComplete)
   );
 
   // Actions
@@ -60,7 +61,7 @@ export const useTaskStore = defineStore('tasks', () => {
       isLoading.value = true;
       error.value = '';
       const data = await taskApi.getTasks(status);
-      tasks.value = data;
+      tasks.value = data.map(dto => new Task(dto));
     } catch (err) {
       error.value = err instanceof Error ? err.message : '載入任務失敗';
       console.error('Failed to fetch tasks:', err);
@@ -73,7 +74,8 @@ export const useTaskStore = defineStore('tasks', () => {
     try {
       isLoading.value = true;
       error.value = '';
-      const newTask = await taskApi.createTask(taskData);
+      const newTaskResponse = await taskApi.createTask(taskData);
+      const newTask = new Task(newTaskResponse);
       tasks.value.push(newTask);
       return newTask;
     } catch (err) {
@@ -89,7 +91,8 @@ export const useTaskStore = defineStore('tasks', () => {
     try {
       isLoading.value = true;
       error.value = '';
-      const updatedTask = await taskApi.updateTask(id, taskData);
+      const updatedTaskResponse = await taskApi.updateTask(id, taskData);
+      const updatedTask = new Task(updatedTaskResponse);
       const index = tasks.value.findIndex(t => t.id === id);
       if (index !== -1) {
         tasks.value[index] = updatedTask;
@@ -121,7 +124,8 @@ export const useTaskStore = defineStore('tasks', () => {
 
   const completeTask = async (id: number) => {
     try {
-      const updatedTask = await taskApi.completeTask(id);
+      const updatedTaskResponse = await taskApi.completeTask(id);
+      const updatedTask = new Task(updatedTaskResponse);
       const index = tasks.value.findIndex(task => task.id === id);
       if (index !== -1) {
         tasks.value[index] = updatedTask;
@@ -136,7 +140,8 @@ export const useTaskStore = defineStore('tasks', () => {
 
   const reopenTask = async (id: number) => {
     try {
-      const updatedTask = await taskApi.reopenTask(id);
+      const updatedTaskResponse = await taskApi.reopenTask(id);
+      const updatedTask = new Task(updatedTaskResponse);
       const index = tasks.value.findIndex(task => task.id === id);
       if (index !== -1) {
         tasks.value[index] = updatedTask;

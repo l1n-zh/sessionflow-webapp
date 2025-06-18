@@ -17,6 +17,7 @@
         label="顏色 (選填)"
         v-model="tagColor"
         placeholder="#"
+        class="w-[6em]"
         :error="errors.color"
       >
         <template #prepend>
@@ -39,9 +40,8 @@
             v-for="color in colorPalette"
             :key="color.name"
             type="button"
-            class="w-full h-8 rounded-md transition-transform duration-100 ease-in-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-            :class="[color.bg, color.border, { 'ring-2 ring-offset-2 ring-primary': tagColor === color.hex }]"
-            :style="{ backgroundColor: color.hexCode, borderColor: color.borderHex }"
+            class="w-full h-8 rounded-md transition-transform duration-100 ease-in-out hover:scale-110 focus:outline-none"
+            :class="[color.bg, tagColor === color.hex ? ['border-2', color.border]:'']"
             @click="selectColor(color.hex)"
           ></button>
         </div>
@@ -80,10 +80,12 @@ import type { TagCreateFormData } from '@/types/ui/forms';
 interface Props {
   show: boolean;
   isSubmitting?: boolean;
+  existingTagNames?: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   isSubmitting: false,
+  existingTagNames: () => []
 });
 
 const emit = defineEmits<{
@@ -96,26 +98,29 @@ const tagColor = ref('');
 const errors = ref({ name: '', color: '' });
 
 const colorPalette = [
-  { name: 'red', hex: 'fecaca', hexCode: '#fecaca', borderHex: '#fca5a5', bg: 'bg-red-200', border: 'border-red-300' },
-  { name: 'orange', hex: 'fed7aa', hexCode: '#fed7aa', borderHex: '#fdba74', bg: 'bg-orange-200', border: 'border-orange-300' },
-  { name: 'yellow', hex: 'fef08a', hexCode: '#fef08a', borderHex: '#fde047', bg: 'bg-yellow-200', border: 'border-yellow-300' },
-  { name: 'lime', hex: 'd9f99d', hexCode: '#d9f99d', borderHex: '#bef264', bg: 'bg-lime-200', border: 'border-lime-300' },
-  { name: 'emerald', hex: 'a7f3d0', hexCode: '#a7f3d0', borderHex: '#6ee7b7', bg: 'bg-emerald-200', border: 'border-emerald-300' },
-  { name: 'cyan', hex: 'a5f3fc', hexCode: '#a5f3fc', borderHex: '#67e8f9', bg: 'bg-cyan-200', border: 'border-cyan-300' },
-  { name: 'blue', hex: 'bfdbfe', hexCode: '#bfdbfe', borderHex: '#93c5fd', bg: 'bg-blue-200', border: 'border-blue-300' },
-  { name: 'violet', hex: 'ddd6fe', hexCode: '#ddd6fe', borderHex: '#c4b5fd', bg: 'bg-violet-200', border: 'border-violet-300' },
-  { name: 'fuchsia', hex: 'f5d0fe', hexCode: '#f5d0fe', borderHex: '#f0abfc', bg: 'bg-fuchsia-200', border: 'border-fuchsia-300' },
-  { name: 'gray', hex: 'e5e7eb', hexCode: '#e5e7eb', borderHex: '#d1d5db', bg: 'bg-gray-200', border: 'border-gray-300' },
+  { name: 'red', hex: 'FFE2E2', bg: 'bg-red-100', border: 'border-red-300' },
+  { name: 'orange', hex: 'FFEDD4', bg: 'bg-orange-100', border: 'border-orange-300' },
+  { name: 'yellow', hex: 'FEF9C2', bg: 'bg-yellow-100', border: 'border-yellow-300' },
+  { name: 'lime', hex: 'ECFCCA', bg: 'bg-lime-100', border: 'border-lime-300' },
+  { name: 'emerald', hex: 'D0FAE5', bg: 'bg-emerald-100', border: 'border-emerald-300' },
+  { name: 'cyan', hex: 'CEFAFE', bg: 'bg-cyan-100', border: 'border-cyan-300' },
+  { name: 'blue', hex: 'DBEAFE', bg: 'bg-blue-100', border: 'border-blue-300' },
+  { name: 'violet', hex: 'DDD6FE', bg: 'bg-violet-100', border: 'border-violet-300' },
+  { name: 'fuchsia', hex: 'FAE8FF', bg: 'bg-fuchsia-100', border: 'border-fuchsia-300' },
+  { name: 'gray', hex: 'F3F4F6', bg: 'bg-gray-100', border: 'border-gray-300' },
 ];
 
 
-const isHexColor = (hex: string) => /^([0-9A-F]{3}){1,2}$/i.test(hex);
+const isHexColor = (hex: string) => /^([0-9A-F]{6})$/i.test(hex);
 
 const validate = () => {
   errors.value = { name: '', color: '' };
   if (!tagName.value.trim()) {
     errors.value.name = '標籤名稱為必填項目';
+  } else if (props.existingTagNames?.includes(tagName.value.trim().toLowerCase())) {
+    errors.value.name = '此標籤名稱已存在';
   }
+
   if (tagColor.value && !isHexColor(tagColor.value)) {
     errors.value.color = '請輸入有效的十六進位色碼';
   }
@@ -136,7 +141,7 @@ const submitForm = () => {
   }
   
   const newTag: TagCreateFormData = {
-    name: tagName.value,
+    name: tagName.value.trim(),
   };
 
   if (tagColor.value) {

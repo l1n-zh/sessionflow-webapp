@@ -1,14 +1,14 @@
 <template>
-  <span :class="tagClasses">
+  <span :class="tagClasses" :style="tagStyles">
     <span class="truncate">{{ name }}</span>
     <button
       v-if="removable"
       type="button"
-      class="ml-0.5 inline-flex items-center justify-center rounded-full hover:bg-black/10  focus:outline-none focus:bg-black/10"
+      class="ml-0.5 inline-flex items-center justify-center rounded-full hover:bg-black/10 focus:outline-none focus:bg-black/10"
       :class="removeButtonClasses"
-      @click="$emit('remove', id)"
+      @click.stop="$emit('remove')"
     >
-      <BaseIcon :icon="ICONS.CLOSE" size="xs" />
+      <BaseIcon :icon="ICONS.CLOSE" :style="{ color: tagStyles.color }" size="xs" />
     </button>
   </span>
 </template>
@@ -17,32 +17,38 @@
 import { computed } from 'vue';
 import BaseIcon from '@/components/atoms/BaseIcon.vue';
 import { ICONS } from '@/constants/icons';
-import type { TagProps } from '@/types/ui/components';
+import type { Tag } from '@/models/Tag';
 
-interface Props extends TagProps {}
+interface Props {
+  name: Tag['name'];
+  color: Tag['color'];
+  removable?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+}
 
 const props = withDefaults(defineProps<Props>(), {
   removable: false,
-  size: 'md'
+  size: 'md',
+  color: '#e5e7eb' // Default to gray-200
 });
 
 defineEmits<{
-  remove: [id?: number];
+  remove: [];
 }>();
 
-// Map hex colors to Tailwind classes
-const colorMap: Record<string, string> = {
-  '#fecaca': 'bg-red-200 text-red-800',
-  '#fed7aa': 'bg-orange-200 text-orange-800',
-  '#fef3c7': 'bg-yellow-200 text-yellow-800',
-  '#d9f99d': 'bg-lime-200 text-lime-800',
-  '#a7f3d0': 'bg-emerald-200 text-emerald-800',
-  '#a5f3fc': 'bg-cyan-200 text-cyan-800',
-  '#bfdbfe': 'bg-blue-200 text-blue-800',
-  '#c4b5fd': 'bg-violet-200 text-violet-800',
-  '#f0abfc': 'bg-fuchsia-200 text-fuchsia-800',
-  '#e5e7eb': 'bg-gray-200 text-gray-800'
+const getContrastColor = (hex: string): string => {
+  if (!hex) return '#374151'; // neutral-700
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+  return yiq >= 128 ? '#374151' : '#ffffff'; // neutral-700 for light bg, white for dark bg
 };
+
+const tagStyles = computed(() => ({
+  backgroundColor: props.color,
+  color: getContrastColor(props.color)
+}));
 
 const tagClasses = computed(() => {
   const baseClasses = 'inline-flex items-center rounded-full font-medium';
@@ -52,10 +58,8 @@ const tagClasses = computed(() => {
     md: 'px-2.5 py-1 text-sm',
     lg: 'px-3 py-1.5 text-base'
   };
-  
-  const colorClasses = colorMap[props.color] || 'bg-gray-200 text-gray-800';
-  
-  return [baseClasses, sizeClasses[props.size], colorClasses].join(' ');
+    
+  return [baseClasses, sizeClasses[props.size]].join(' ');
 });
 
 const removeButtonClasses = computed(() => {
