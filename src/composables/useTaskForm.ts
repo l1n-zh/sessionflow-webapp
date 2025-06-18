@@ -1,8 +1,8 @@
-import type { TaskResponse } from '@/types/api/task';
+import type { Task } from '@/models/Task';
 import type { TaskFormData } from '@/types/ui/forms';
 import { ref, computed, watch } from 'vue';
 
-export function useTaskForm(initialTask?: TaskResponse) {
+export function useTaskForm(initialTask?: Task) {
   // Form data
   const formData = ref<TaskFormData>({
     title: '',
@@ -63,7 +63,7 @@ export function useTaskForm(initialTask?: TaskResponse) {
       formData.value = {
         title: initialTask.title,
         tagIds: initialTask.tags.map(tag => tag.id),
-        dueTime: initialTask.dueTime ? new Date(initialTask.dueTime).toISOString().slice(0, 16) : '',
+        dueTime: initialTask.dueTime ? initialTask.dueTime.toISOString().slice(0, 16) : '',
         note: initialTask.note || ''
       };
     } else {

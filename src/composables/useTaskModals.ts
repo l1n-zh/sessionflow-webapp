@@ -1,11 +1,11 @@
-import type { TaskResponse } from '@/types/api/task';
+import type { Task } from '@/models/Task';
 import { ref } from 'vue';
 
 export function useTaskModals() {
   const showCreateModal = ref(false);
   const showEditModal = ref(false);
   const showDeleteModal = ref(false);
-  const selectedTask = ref<TaskResponse>();
+  const selectedTask = ref<Task>();
 
   const openCreateModal = () => {
     showCreateModal.value = true;
@@ -15,7 +15,7 @@ export function useTaskModals() {
     showCreateModal.value = false;
   };
 
-  const openEditModal = (task: TaskResponse) => {
+  const openEditModal = (task: Task) => {
     selectedTask.value = task;
     showEditModal.value = true;
   };
@@ -25,7 +25,7 @@ export function useTaskModals() {
     selectedTask.value = undefined;
   };
 
-  const openDeleteModal = (task: TaskResponse) => {
+  const openDeleteModal = (task: Task) => {
     selectedTask.value = task;
     showDeleteModal.value = true;
   };

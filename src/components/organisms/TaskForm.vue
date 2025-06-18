@@ -19,8 +19,9 @@
         :selected-tags="selectedTags"
         :available-tags="availableTags"
         @add-tag="addTag"
-        @remove-tag="tag => removeTag(tag.id)"
+        @remove-tag="removeTag"
         @create-new="isCreateTagModalOpen = true"
+        @edit-tag="tagModals.openEditModal"
       />
     </FormField>
 
@@ -67,11 +68,30 @@
       </BaseButton>
     </div>
   </form>
+
+  <!-- Tag Modals -->
   <TagCreateModal
     :show="isCreateTagModalOpen"
     :is-submitting="tagStore.isCreating"
+    :existing-tag-names="tagModals.existingTagNames.value"
     @close="isCreateTagModalOpen = false"
     @create="handleCreateTag"
+  />
+  <TagEditModal
+    :show="tagModals.isEditModalOpen.value"
+    :tag="tagModals.selectedTagForEdit.value"
+    :is-submitting="tagModals.isSubmitting.value"
+    :existing-tag-names="tagModals.existingTagNames.value"
+    @close="tagModals.closeEditModal"
+    @update="handleUpdateTag"
+    @delete="tagModals.openDeleteModal"
+  />
+  <TagDeleteConfirm
+    :show="tagModals.isDeleteModalOpen.value"
+    :tag="tagModals.selectedTagForDelete.value"
+    :is-deleting="tagModals.isSubmitting.value"
+    @close="tagModals.closeDeleteModal"
+    @confirm="handleDeleteTag"
   />
 </template>
 
@@ -81,14 +101,17 @@ import FormField from '@/components/molecules/FormField.vue';
 import BaseButton from '@/components/atoms/BaseButton.vue';
 import TagInput from '@/components/molecules/TagInput.vue';
 import TagCreateModal from '@/components/organisms/TagCreateModal.vue';
+import TagEditModal from '@/components/organisms/TagEditModal.vue';
+import TagDeleteConfirm from '@/components/organisms/TagDeleteConfirm.vue';
 import { useTagStore } from '@/store/tags';
 import { useTaskForm } from '@/composables/useTaskForm';
 import { useTagSelection } from '@/composables/useTagSelection';
-import type { TaskResponse } from '@/types/api/task';
-import type { TaskFormData, TagCreateFormData } from '@/types/ui/forms';
+import { useTagModals } from '@/composables/useTagModals';
+import type { Task } from '@/models/Task';
+import type { TaskFormData, TagCreateFormData, TagUpdateFormData } from '@/types/ui/forms';
 
 interface Props {
-  task?: TaskResponse;
+  task?: Task;
   isSubmitting?: boolean;
   hideActions?: boolean;
 }
@@ -121,15 +144,47 @@ const {
   removeTag
 } = useTagSelection(formData);
 
+const tagModals = useTagModals();
+
 const isCreateTagModalOpen = ref(false);
 
 const handleCreateTag = async (data: TagCreateFormData) => {
-  const newTag = await tagStore.createTag({
-    name: data.name,
-    color: data.color || '#e5e7eb' // Default to gray-200 if not provided
-  });
-  if (newTag) {
-    isCreateTagModalOpen.value = false;
+  try {
+    const newTag = await tagStore.createTag({
+      name: data.name,
+      color: data.color || '#e5e7eb'
+    });
+    if (newTag) {
+      isCreateTagModalOpen.value = false;
+      addTag(newTag); // Auto-select the new tag
+    }
+  } catch (error) {
+    // Error is handled in the store, but you could add UI feedback here
+    console.error("Failed to create and select tag:", error)
+  }
+};
+
+const handleUpdateTag = async (data: TagUpdateFormData) => {
+  tagModals.isSubmitting.value = true;
+  try {
+    await tagStore.updateTag(data.id, { name: data.name, color: data.color });
+    tagModals.closeEditModal();
+  } finally {
+    tagModals.isSubmitting.value = false;
+  }
+};
+
+const handleDeleteTag = async () => {
+  if (!tagModals.selectedTagForDelete.value) return;
+  
+  tagModals.isSubmitting.value = true;
+  try {
+    // Deselect tag from the current task form before deleting
+    removeTag(tagModals.selectedTagForDelete.value); 
+    await tagStore.deleteTag(tagModals.selectedTagForDelete.value.id);
+    tagModals.closeDeleteModal();
+  } finally {
+    tagModals.isSubmitting.value = false;
   }
 };
 

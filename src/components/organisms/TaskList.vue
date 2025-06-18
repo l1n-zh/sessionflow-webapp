@@ -94,14 +94,14 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { TaskResponse } from "@/types/api/task";
+import type { Task } from "@/models/Task";
 import TaskItem from "./TaskItem.vue";
 import BaseButton from "@/components/atoms/BaseButton.vue";
 import BaseIcon from "@/components/atoms/BaseIcon.vue";
 import { ICONS } from "@/constants/icons";
 
 interface Props {
-    tasks: TaskResponse[];
+    tasks: Task[];
     activeTaskId?: number;
     activeSessionTaskId?: number;
     sessionLoadingTaskId?: number;
@@ -116,7 +116,7 @@ const emit = defineEmits<{
     startSession: [taskId: number];
     endSession: [taskId: number];
     complete: [taskId: number];
-    edit: [task: TaskResponse];
+    edit: [task: Task];
 }>();
 
 // 本地狀態
@@ -134,9 +134,9 @@ const displayTasks = computed(() => {
     // 根據完成狀態篩選
     const filteredTasks = props.tasks.filter((task) => {
         if (showCompleted.value) {
-            return task.status === "COMPLETE";
+            return task.isComplete;
         } else {
-            return task.status === "PENDING";
+            return !task.isComplete;
         }
     });
 
@@ -150,7 +150,7 @@ const displayTasks = computed(() => {
 
             // 按截止時間由近到遠排序
             return (
-                new Date(a.dueTime).getTime() - new Date(b.dueTime).getTime()
+                a.dueTime.getTime() - b.dueTime.getTime()
             );
         });
     }
@@ -193,7 +193,7 @@ const handleComplete = (taskId: number) => {
     emit("complete", taskId);
 };
 
-const handleEdit = (task: TaskResponse) => {
+const handleEdit = (task: Task) => {
     emit("edit", task);
 };
 </script>

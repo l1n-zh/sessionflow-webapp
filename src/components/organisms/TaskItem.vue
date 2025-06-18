@@ -6,7 +6,7 @@
     >
         <!-- 完成/取消完成按鈕 -->
         <TaskCompleteButton
-            :is-completed="task.status === 'COMPLETE'"
+            :is-completed="task.isComplete"
             :loading="isCompleteLoading"
             size="md"
             @click.stop="handleComplete"
@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { TaskResponse } from "@/types";
+import type { Task } from "@/models/Task";
 import ActionButton from "@/components/atoms/ActionButton.vue";
 import TaskCompleteButton from "@/components/molecules/TaskCompleteButton.vue";
 import BaseTag from "@/components/atoms/BaseTag.vue";
@@ -64,7 +64,7 @@ import { formatDueDate } from "@/utils/dateFormatter";
 import { ICONS } from "@/constants/icons";
 
 interface Props {
-    task: TaskResponse;
+    task: Task;
     isActive?: boolean;
     isSessionLoading?: boolean;
     isCompleteLoading?: boolean;
@@ -84,7 +84,7 @@ const emit = defineEmits<{
     startSession: [taskId: number];
     endSession: [taskId: number];
     complete: [taskId: number];
-    edit: [task: TaskResponse];
+    edit: [task: Task];
 }>();
 
 // 計算樣式類別
@@ -114,7 +114,7 @@ const formattedDueDate = computed(() => {
 const dueDateClasses = computed(() => {
     if (!props.task.dueTime) return "text-neutral-500";
 
-    const date = new Date(props.task.dueTime);
+    const date = props.task.dueTime;
     const now = new Date();
     const diffTime = date.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

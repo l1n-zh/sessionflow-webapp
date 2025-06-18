@@ -36,12 +36,12 @@ import { ref, computed } from 'vue';
 import BaseModal from '@/components/molecules/BaseModal.vue';
 import BaseButton from '@/components/atoms/BaseButton.vue';
 import TaskForm from '@/components/organisms/TaskForm.vue';
-import type { TaskResponse } from '@/types/api/task';
+import type { Task } from '@/models/Task';
 import type { TaskFormData } from '@/types/ui/forms';
 
 interface Props {
   show: boolean;
-  task?: TaskResponse;
+  task?: Task;
   isSubmitting?: boolean;
 }
 

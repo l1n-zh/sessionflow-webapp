@@ -58,7 +58,7 @@ import TaskList from "@/components/organisms/TaskList.vue";
 import TaskModal from "@/components/organisms/TaskModal.vue";
 import TaskDeleteConfirm from "@/components/organisms/TaskDeleteConfirm.vue";
 import { ICONS } from "@/constants/icons";
-import type { TaskResponse } from "@/types/api/task";
+import type { Task } from "@/models/Task";
 import type { TaskFormData } from "@/types/ui/forms";
 
 const taskStore = useTaskStore();
@@ -87,7 +87,7 @@ const {
 } = useTaskModals();
 
 // Methods
-const handleTaskClick = (task: TaskResponse) => {
+const handleTaskClick = (task: Task) => {
     console.log("Task clicked:", task);
 };
 
@@ -107,7 +107,7 @@ const handleDeleteTaskSubmit = () => {
     }
 };
 
-const handleTaskEdit = (task: TaskResponse) => {
+const handleTaskEdit = (task: Task) => {
     openEditModal(task);
 };
 
