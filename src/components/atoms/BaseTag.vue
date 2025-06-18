@@ -51,7 +51,7 @@ const tagStyles = computed(() => ({
 }));
 
 const tagClasses = computed(() => {
-  const baseClasses = 'inline-flex items-center rounded-full font-medium';
+  const baseClasses = 'inline-flex items-center rounded-full font-medium cursor-pointer';
   
   const sizeClasses = {
     sm: 'px-2 py-0.5 text-xs',

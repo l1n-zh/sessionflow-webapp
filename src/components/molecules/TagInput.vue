@@ -2,7 +2,7 @@
     <div class="relative" ref="rootEl">
         <div
             @click="toggleDropdown"
-            class="w-full min-h-[42px] p-2 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white border-stone-300 text-neutral-700 placeholder-neutral-400 flex flex-wrap gap-2 items-center cursor-text"
+            class="w-full min-h-[42px] p-2 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white border-stone-300 text-neutral-700 placeholder-neutral-400 flex flex-wrap gap-2 items-center"
             :class="{ 'ring-2 ring-primary border-transparent': isOpen }"
             tabindex="0"
         >
@@ -14,7 +14,7 @@
                 removable
                 @remove="onRemoveTag(tag)"
                 @click="onEditTag(tag)"
-                class="cursor-pointer hover:opacity-80 transition-opacity"
+                class="hover:opacity-80 transition-opacity"
             />
             <span v-if="selectedTags.length === 0" class="text-neutral-400">
                 選擇標籤...
@@ -43,7 +43,7 @@
                     <li
                         v-for="tag in availableTags"
                         :key="tag.id"
-                        class="px-3 py-2 hover:bg-primary/10 cursor-pointer flex items-center justify-between text-sm relative"
+                        class="px-3 py-2 hover:bg-primary/10 flex items-center justify-between text-sm relative"
                         @click="onAddTag(tag)"
                     >
                         <div class="flex items-center gap-2">
