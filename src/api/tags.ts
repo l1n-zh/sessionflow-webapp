@@ -4,20 +4,17 @@ import { api } from '.';
 export const tagApi = {
   // Get all tags
   async getTags(): Promise<TagResponse[]> {
-    const response = await api.get('/tags');
-    return response.data;
+    return api.get('/tags');
   },
 
   // Create a new tag
   async createTag(tag: TagRequest): Promise<TagResponse> {
-    const response = await api.post('/tags', tag);
-    return response.data;
+    return api.post('/tags', tag);
   },
 
   // Update an existing tag
   async updateTag(id: number, tag: TagRequest): Promise<TagResponse> {
-    const response = await api.put(`/tags/${id}`, tag);
-    return response.data;
+    return api.put(`/tags/${id}`, tag);
   },
 
   // Delete a tag

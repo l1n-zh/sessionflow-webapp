@@ -5,20 +5,17 @@ export const taskApi = {
   // Get all tasks with optional status filter
   async getTasks(status?: 'PENDING' | 'COMPLETE'): Promise<TaskResponse[]> {
     const params = status ? { status } : {};
-    const response = await api.get('/tasks', { params });
-    return response.data;
+    return api.get('/tasks', { params });
   },
 
   // Create a new task
   async createTask(task: TaskRequest): Promise<TaskResponse> {
-    const response = await api.post('/tasks', task);
-    return response.data;
+    return api.post('/tasks', task);
   },
 
   // Update an existing task
   async updateTask(id: number, task: Partial<TaskRequest>): Promise<TaskResponse> {
-    const response = await api.put(`/tasks/${id}`, task);
-    return response.data;
+    return api.put(`/tasks/${id}`, task);
   },
 
   // Delete a task
@@ -28,13 +25,11 @@ export const taskApi = {
 
   // Mark task as complete
   async completeTask(id: number): Promise<TaskResponse> {
-    const response = await api.patch(`/tasks/${id}/complete`);
-    return response.data;
+    return api.patch(`/tasks/${id}/complete`);
   },
 
   // Reopen a completed task
   async reopenTask(id: number): Promise<TaskResponse> {
-    const response = await api.patch(`/tasks/${id}/reopen`);
-    return response.data;
+    return api.patch(`/tasks/${id}/reopen`);
   }
 }; 

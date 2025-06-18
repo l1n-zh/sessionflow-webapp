@@ -24,9 +24,9 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
   (response) => {
-    return response;
+    return response.data;
   },
-  (error) => {
+  (error: AxiosError) => {
     // Handle API errors consistently
     if (error.response?.data) {
       const apiError = error.response.data as ErrorResponse;
