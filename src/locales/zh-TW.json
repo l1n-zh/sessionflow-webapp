@@ -1,0 +1,58 @@
+{
+  "app": {
+    "name": "SessionFlow"
+  },
+  "nav": {
+    "tasks": "任務",
+    "schedule": "排程",
+    "records": "記錄"
+  },
+  "task": {
+    "title": "標題",
+    "description": "描述",
+    "estimatedDuration": "預估時間",
+    "dueTime": "到期時間",
+    "status": "狀態",
+    "tags": "標籤",
+    "active": "進行中",
+    "archived": "已封存",
+    "create": "建立任務",
+    "edit": "編輯任務",
+    "delete": "刪除任務",
+    "minutes": "分鐘",
+    "tasks": "任務",
+    "empty": "無任務",
+    "confirmDelete": "確認刪除此任務？排程和紀錄會一併被刪除",
+    "complete": "完成任務"
+  },
+  "session": {
+    "date": "日期",
+    "startTime": "開始時間",
+    "endTime": "結束時間",
+    "create": "建立工作階段",
+    "view": "查看階段紀錄",
+    "start": "開始",
+    "pause": "暫停",
+    "resume": "繼續",
+    "stop": "結束",
+    "log": "階段紀錄",
+    "noRecords": "無紀錄"
+  },
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "confirm": "確認",
+    "delete": "刪除",
+    "edit": "編輯",
+    "view": "查看",
+    "create": "新增",
+    "search": "搜尋",
+    "filter": "過濾",
+    "sort": "排序",
+    "group": "分組",
+    "required": "必填",
+    "loading": "載入中",
+    "complete": "完成",
+    "hide": "隱藏"
+  }
+} 

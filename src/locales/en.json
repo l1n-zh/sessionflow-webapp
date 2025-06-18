@@ -1,0 +1,58 @@
+{
+  "app": {
+    "name": "SessionFlow"
+  },
+  "nav": {
+    "tasks": "Tasks",
+    "schedule": "Schedule",
+    "records": "Records"
+  },
+  "task": {
+    "title": "Title",
+    "description": "Description",
+    "estimatedDuration": "Estimated Duration",
+    "dueTime": "Due Time",
+    "status": "Status",
+    "tags": "Tags",
+    "active": "Active",
+    "archived": "Archived",
+    "create": "Create Task",
+    "edit": "Edit Task",
+    "delete": "Delete Task",
+    "minutes": "minutes",
+    "tasks": "Tasks",
+    "empty": "No tasks found",
+    "confirmDelete": "Are you sure you want to delete this task? Schedules and records will be deleted.",
+    "complete": "Complete Task"
+  },
+  "session": {
+    "date": "Date",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "create": "Create Session",
+    "view": "View Session Logs",
+    "start": "Start",
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop": "Stop",
+    "log": "Session Log",
+    "noRecords": "No records found"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "group": "Group",
+    "required": "Required",
+    "loading": "Loading",
+    "complete": "Complete",
+    "hide": "Hide"
+  }
+} 
