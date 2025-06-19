@@ -38,8 +38,7 @@
         <TransitionGroup
             tag="div"
             name="task-list"
-            class="relative overflow-y-auto pt-2 no-scrollbar"
-            :class="displayTasks.length > 0 ? 'flex-1' : 'h-0'"
+            class="relative overflow-y-auto pt-2 no-scrollbar flex-1"
         >
             <TaskItem
                 v-for="task in displayTasks"
@@ -60,21 +59,23 @@
         </TransitionGroup>
 
         <!-- 空狀態 -->
-        <div
-            v-show="displayTasks.length === 0"
-            class="text-center py-12 text-gray-500"
-        >
-            <div class="text-lg font-medium mb-2">
-                {{ showCompleted ? "沒有已完成的任務" : "沒有待完成的任務" }}
+        <Transition name="empty-state-fade">
+            <div
+                v-if="displayTasks.length === 0"
+                class="text-center text-gray-500 absolute top-20 left-1/2 -translate-x-1/2"
+            >
+                <div class="text-lg font-medium mb-2">
+                    {{ showCompleted ? "沒有已完成的任務" : "沒有待完成的任務" }}
+                </div>
+                <div class="text-sm">
+                    {{
+                        showCompleted
+                            ? "完成一些任務後就會顯示在這裡"
+                            : "建立新任務開始使用吧！"
+                    }}
+                </div>
             </div>
-            <div class="text-sm">
-                {{
-                    showCompleted
-                        ? "完成一些任務後就會顯示在這裡"
-                        : "建立新任務開始使用吧！"
-                }}
-            </div>
-        </div>
+        </Transition>
 
         <div
             class="absolute bottom-0 left-0 h-16 flex flex-col gap-2 w-full z-10 bg-linear-to-t from-stone-50 to-stone-50/0 from-60%"
@@ -281,5 +282,15 @@ const getTaskForDisplay = (task: Task): Task => {
 
 .task-list-move {
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.empty-state-fade-enter-active,
+.empty-state-fade-leave-active {
+    transition: opacity 0.4s ease;
+}
+
+.empty-state-fade-enter-from,
+.empty-state-fade-leave-to {
+    opacity: 0;
 }
 </style>
