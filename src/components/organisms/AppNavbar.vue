@@ -9,7 +9,7 @@
               :key="item.name"
               :to="item.path"
               :class="[
-                'px-6 py-0.5 rounded-md textransition-colors',
+                'px-6 py-0.5 rounded-md',
                 $route.path === item.path
                   ? 'bg-primary text-white font-medium'
                   : 'text-neutral-500 hover:text-primary hover:bg-primary/5'
