@@ -1,22 +1,25 @@
 import { ref } from 'vue';
 import { useTaskStore } from '@/store/tasks';
-import { Task } from '@/models/Task';
 import type { TaskFormData } from '@/types/ui/forms';
 
 export function useTaskOperations() {
   const taskStore = useTaskStore();
   const isSubmitting = ref(false);
 
-  const handleTaskToggleComplete = async (task: Task) => {
-    try {
-      if (!task.isComplete) {
-        await taskStore.completeTask(task.id);
-      } else {
-        await taskStore.reopenTask(task.id);
+  const handleTaskComplete = async (taskId: number) => {
+      try {
+          await taskStore.completeTask(taskId);
+      } catch (error) {
+          console.error('Failed to complete task:', error);
       }
-    } catch (error) {
-      console.error('Failed to toggle task status:', error);
-    }
+  };
+
+  const handleTaskReopen = async (taskId: number) => {
+      try {
+          await taskStore.reopenTask(taskId);
+      } catch (error) {
+          console.error('Failed to reopen task:', error);
+      }
   };
 
   const handleCreateTask = async (data: TaskFormData, onSuccess?: () => void) => {
@@ -57,9 +60,10 @@ export function useTaskOperations() {
 
   return {
     isSubmitting,
-    handleTaskToggleComplete,
     handleCreateTask,
     handleUpdateTask,
-    handleDeleteTask
+    handleDeleteTask,
+    handleTaskComplete,
+    handleTaskReopen
   };
 } 

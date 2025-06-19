@@ -69,7 +69,8 @@ const tagStore = useTagStore();
 // Use composables
 const {
     isSubmitting,
-    handleTaskToggleComplete,
+    handleTaskComplete,
+    handleTaskReopen,
     handleCreateTask,
     handleUpdateTask,
     handleDeleteTask,
@@ -89,9 +90,6 @@ const {
 } = useTaskModals();
 
 // Methods
-const handleTaskClick = (task: Task) => {
-    console.log("Task clicked:", task);
-};
 
 const handleCreateTaskSubmit = (data: TaskFormData) => {
     handleCreateTask(data, closeCreateModal);
@@ -111,18 +109,6 @@ const handleDeleteTaskSubmit = () => {
 
 const handleTaskEdit = (task: Task) => {
     openEditModal(task);
-};
-
-const handleTaskComplete = (taskId: number) => {
-    taskStore.completeTask(taskId).catch(error => {
-        console.error('Failed to complete task:', error);
-    });
-};
-
-const handleTaskReopen = (taskId: number) => {
-    taskStore.reopenTask(taskId).catch(error => {
-        console.error('Failed to reopen task:', error);
-    });
 };
 
 // Lifecycle

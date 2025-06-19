@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { tagApi } from '@/api/tags';
-import type { TagResponse, TagRequest } from '@/types/api/tag';
+import type { TagRequest } from '@/types/api/tag';
 import { Tag } from '@/models/Tag';
 
 export const useTagStore = defineStore('tags', () => {

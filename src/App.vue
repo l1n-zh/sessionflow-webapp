@@ -28,7 +28,6 @@ import SessionModal from '@/components/organisms/SessionModal.vue';
 import { useSessionModals } from '@/composables/useSessionModals';
 import { useSessionStore } from '@/store/sessions';
 import type { SessionCreateFormData, SessionEndFormData } from '@/types/ui/forms';
-import { Session } from '@/models/Session';
 
 const isDev = import.meta.env.DEV;
 

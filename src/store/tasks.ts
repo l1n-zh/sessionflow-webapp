@@ -1,12 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { Task } from '@/models/Task';
-import type { TaskResponse, TaskRequest } from '@/types/api/task';
-import type { TagResponse } from '@/types/api/tag';
+import type { TaskRequest } from '@/types/api/task';
 import type { TaskFilter } from '@/types/ui/forms';
 import type { TaskStatus } from '@/types/utility';
 import { taskApi } from '@/api/tasks';
-import { useTagStore } from './tags';
 
 export const useTaskStore = defineStore('tasks', () => {
   // State
