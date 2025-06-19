@@ -25,7 +25,7 @@
             <!-- 截止時間欄位（可點擊排序） -->
             <div class="min-w-0">
                 <button
-                    class="hover:text-neutral-800 transition-colors flex items-center gap-1"
+                    class="hover:text-primary transition-colors flex items-center gap-1"
                     @click="toggleSort"
                 >
                     <span>截止時間</span>

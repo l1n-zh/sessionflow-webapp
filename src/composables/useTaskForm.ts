@@ -50,7 +50,7 @@ export function useTaskForm(initialTask?: Task) {
         title: formData.value.title.trim(),
         tagIds: formData.value.tagIds,
         dueTime: formData.value.dueTime || undefined,
-        note: formData.value.note?.trim() || undefined
+        note: formData.value.note?.trim()
       };
       
       onSubmit(submitData);

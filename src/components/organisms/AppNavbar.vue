@@ -1,9 +1,8 @@
 <template>
-  <nav class="bg-stone-50 border border-neutral-300 rounded-b-xl">
-    <div class="max-w-7xl ml-5">
-      <div class="flex items-center justify-between h-16">
+  <nav class="bg-stone-50 border border-neutral-300 rounded-b-xl px-5">
+      <div class="flex items-center justify-between h-16 gap-5">
         <!-- Navigation Links -->
-        <div class="hidden md:block">
+        <div class="hidden md:block min-w-fit">
           <div class="flex items-baseline space-x-1 border-1 rounded-lg border-slate-300 p-1">
             <router-link
               v-for="item in navigationItems"
@@ -21,6 +20,16 @@
           </div>
         </div>
 
+        <!-- Session Real Time Controls -->
+        <div class="hidden md:flex items-center justify-center gap-2 overflow-x-auto flex-1">
+            <RealTimeControl
+                v-for="session in activeSessions"
+                :key="session.id"
+                :session="session"
+                @end-session="openEndModal"
+            />
+        </div>
+
         <!-- Mobile menu button -->
         <div class="md:hidden">
           <button
@@ -30,7 +39,6 @@
           >
             <BaseIcon :icon="mobileMenuOpen ? ICONS.CLOSE : ICONS.MENU" size="lg" />
           </button>
-        </div>
       </div>
     </div>
 
@@ -51,6 +59,15 @@
         >
           {{ item.name }}
         </router-link>
+         <!-- Mobile Session Controls -->
+        <div class="pt-4 space-y-2">
+             <RealTimeControl
+                v-for="session in activeSessions"
+                :key="session.id"
+                :session="session"
+                @end-session="openEndModal"
+            />
+        </div>
       </div>
     </div>
   </nav>
@@ -59,14 +76,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import BaseIcon from '@/components/atoms/BaseIcon.vue';
+import RealTimeControl from '@/components/molecules/RealTimeControl.vue';
 import { ICONS } from '@/constants/icons';
+import { useSessionControls } from '@/composables/useSessionControls';
+import { useSessionModals } from '@/composables/useSessionModals';
+
 
 const mobileMenuOpen = ref(false);
+
+const { activeSessions } = useSessionControls();
+const { openEndModal } = useSessionModals();
 
 const navigationItems = [
   { name: '任務', path: '/tasks' },
   { name: '排程', path: '/schedule' },
   { name: '紀錄', path: '/session-records' },
-  { name: 'Sandbox', path: '/sandbox' }
 ];
 </script> 

@@ -3,7 +3,7 @@ export interface TaskFormData {
   title: string;
   tagIds: number[];
   dueTime?: string;
-  note?: string;
+  note: string;
 }
 
 export interface TagFormData {
@@ -20,6 +20,17 @@ export interface TagUpdateFormData {
   id: number;
   name: string;
   color: string;
+}
+
+export interface SessionCreateFormData {
+  name: string;
+  endReminderMinutes?: string;
+  planningNotes: string;
+}
+
+export interface SessionEndFormData {
+  completionNotes: string;
+  markTaskAsComplete: boolean;
 }
 
 // Filter Types

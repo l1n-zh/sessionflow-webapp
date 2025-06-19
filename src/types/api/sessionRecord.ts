@@ -1,10 +1,13 @@
-// API Response Types
+/**
+ * Represents the data structure for a session record object received from the API.
+ * This is the response after ending a session.
+ */
 export interface SessionRecordResponse {
   id: number;
   title: string;
   taskId?: number;
-  startAt: string;
-  endAt: string;
+  startAt: string; // ISO 8601 string
+  endAt: string; // ISO 8601 string
   plannedNote?: string;
   completionNote?: string;
 }

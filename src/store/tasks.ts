@@ -47,6 +47,10 @@ export const useTaskStore = defineStore('tasks', () => {
     return filtered;
   });
 
+  const getTaskById = computed(() => {
+    return (id: number) => tasks.value.find(task => task.id === id);
+  });
+
   const pendingTasks = computed(() => 
     tasks.value.filter(task => !task.isComplete)
   );
@@ -68,6 +72,13 @@ export const useTaskStore = defineStore('tasks', () => {
     } finally {
       isLoading.value = false;
     }
+  };
+
+  const ensureTasks = async (): Promise<Task[]> => {
+    if (tasks.value.length === 0) {
+      await fetchTasks();
+    }
+    return tasks.value;
   };
 
   const createTask = async (taskData: TaskRequest) => {
@@ -189,9 +200,11 @@ export const useTaskStore = defineStore('tasks', () => {
     filteredTasks,
     pendingTasks,
     completedTasks,
+    getTaskById,
     
     // Actions
     fetchTasks,
+    ensureTasks,
     createTask,
     updateTask,
     deleteTask,
