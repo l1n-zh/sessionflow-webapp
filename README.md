@@ -17,7 +17,4 @@ npm run dev
 
 # 編譯
 npm run build
-
-# 查看組件展示
-# 訪問 http://localhost:5173/sandbox
 ```

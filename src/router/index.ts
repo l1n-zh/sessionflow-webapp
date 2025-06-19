@@ -40,14 +40,6 @@ const router = createRouter({
       }
     },
     {
-      path: '/sandbox',
-      name: 'ComponentSandbox',
-      component: () => import('@/views/ComponentSandbox.vue'),
-      meta: {
-        title: 'Component Sandbox'
-      }
-    },
-    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/NotFoundPage.vue'),
