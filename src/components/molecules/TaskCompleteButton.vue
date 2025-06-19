@@ -112,7 +112,7 @@ const handleChange = async (event: Event) => {
     transform: scale(0);
     opacity: 0;
   }
-  80% {
+  40%, 100% {
     transform: scale(1.2);
     opacity: 1;
   }
@@ -130,7 +130,11 @@ const handleChange = async (event: Event) => {
 
 /* 未完成狀態點擊時的擴散效果 */
 .task-complete-button[data-completed="false"].animating .expand-bg {
-  animation: expand 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: expand 0.3s linear forwards;
+}
+.task-complete-button[data-completed="false"].animating {
+  transition: color 0.3s linear;
+  color:white !important;
 }
 
 /* 已完成狀態點擊時的旋轉效果 */

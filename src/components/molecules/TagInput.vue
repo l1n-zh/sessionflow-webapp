@@ -13,7 +13,6 @@
                 :color="tag.color"
                 removable
                 @remove="onRemoveTag(tag)"
-                @click="onEditTag(tag)"
                 class="hover:opacity-80 transition-opacity"
             />
             <span v-if="selectedTags.length === 0" class="text-neutral-400">
