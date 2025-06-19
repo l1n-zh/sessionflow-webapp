@@ -29,7 +29,7 @@
                     @click="toggleSort"
                 >
                     <span>截止時間</span>
-                    <BaseIcon :icon="ICONS.CHEVRON_UP" size="sm" />
+                    <BaseIcon :icon="ICONS.CHEVRON_UP" size="sm" :class="sortByDueDate ? 'text-primary' : ''" />
                 </button>
             </div>
         </div>
