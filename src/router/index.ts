@@ -16,14 +16,6 @@ const router = createRouter({
       }
     },
     {
-      path: '/sessions',
-      name: 'Sessions',
-      component: () => import('@/views/SessionsPage.vue'),
-      meta: {
-        title: '工作階段'
-      }
-    },
-    {
       path: '/session-records',
       name: 'SessionRecords',
       component: () => import('@/views/SessionRecordsPage.vue'),
@@ -31,14 +23,15 @@ const router = createRouter({
         title: '階段紀錄'
       }
     },
-    {
-      path: '/schedule',
-      name: 'Schedule',
-      component: () => import('@/views/SchedulePage.vue'),
-      meta: {
-        title: '排程管理'
-      }
-    },
+    // TODO: 排程管理
+    // {
+    //   path: '/schedule',
+    //   name: 'Schedule',
+    //   component: () => import('@/views/SchedulePage.vue'),
+    //   meta: {
+    //     title: '排程管理'
+    //   }
+    // },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
