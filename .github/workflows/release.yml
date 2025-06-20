@@ -19,8 +19,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Zip dist
-        run: zip -r sessionflowapp.zip dist
+      - name: Zip dist/sessionflowapp
+        run: zip -r sessionflowapp.zip dist/sessionflowapp
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
