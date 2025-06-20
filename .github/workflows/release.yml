@@ -1,0 +1,26 @@
+name: Build and Release Frontend
+
+on:
+  push:
+    tags:
+      - "v*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Zip dist
+        run: zip -r sessionflowapp.zip dist
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: sessionflowapp.zip
