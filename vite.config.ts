@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 import tailwindcss from "@tailwindcss/vite";
-import { resolve } from 'path'
+import { resolve } from "path";
 import vueDevTools from "vite-plugin-vue-devtools";
 import vuetify from "vite-plugin-vuetify";
 
@@ -20,12 +20,26 @@ export default defineConfig({
             "@": resolve(__dirname, "src"),
         },
     },
-    server: {
-        proxy: {
-            "/api": {
-                target: "http://localhost:8080", // 你的後端 API 伺服器地址
-                changeOrigin: true,
+    server:
+        process.env.NODE_ENV === "production"
+            ? {}
+            : {
+                  proxy: {
+                      "/api": {
+                          target: "http://localhost:8080", // 你的後端 API 伺服器地址
+                          changeOrigin: true,
+                      },
+                  },
+              },
+    build: {
+        rollupOptions: {
+            output: {
+                entryFileNames: `assets/[name].js`,
+                chunkFileNames: `assets/[name].js`,
+                assetFileNames: `assets/[name].[ext]`,
             },
         },
+        outDir: "dist/sessionflowapp",
     },
+    base: process.env.NODE_ENV === "production" ? "/sessionflowapp/" : "/",
 });
