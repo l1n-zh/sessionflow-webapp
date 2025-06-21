@@ -1,12 +1,13 @@
-# Vue 3 + TypeScript + Vite
+# SessionFlow Web App
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Web App for [SessionFlow](https://github.com/l-zch/sessionflow)
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## 技術棧
 
-# SessionFlow Frontend
-
-Vue 3 + TypeScript + Vite 前端應用程式
+- Vue 3
+- TypeScript
+- Vite
+## 開發
 
 ```bash
 # 安裝依賴

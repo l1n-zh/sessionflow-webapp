@@ -8,11 +8,6 @@ export interface SessionResponse {
   taskId?: number;
   note?: string;
   endReminder?: string; // ISO 8601 string
-  /**
-   * @assumption The `startTime` field is assumed to exist for calculating elapsed time,
-   * though it's not explicitly in the `SessionResponse` of the spec.md.
-   * It corresponds to `startAt` in `SessionRecordResponse`.
-   */
   startTime: string; // ISO 8601 string
 }
 
