@@ -87,8 +87,8 @@ const { openCreateModal } = useSessionModals();
 // 計算樣式類別
 const layoutClasses = computed(() => {
     return props.showActions
-        ? "grid-cols-[24px_32px_2fr_1fr_minmax(120px,max-content)]"
-        : "grid-cols-[24px_2fr_1fr_minmax(120px,max-content)]";
+        ? "grid-cols-[24px_32px_2fr_1fr_minmax(90px,max-content)]"
+        : "grid-cols-[24px_2fr_1fr_minmax(90px,max-content)]";
 });
 
 const itemClasses = computed(() => {

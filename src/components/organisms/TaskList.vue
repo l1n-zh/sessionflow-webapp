@@ -131,8 +131,8 @@ const animatingTaskIds = ref<Map<number, "completing" | "reopening">>(
 
 const gridLayoutClass = computed(() => {
     return showCompleted.value
-        ? "grid-cols-[24px_2fr_1fr_minmax(120px,max-content)]"
-        : "grid-cols-[24px_32px_2fr_1fr_minmax(120px,max-content)]";
+        ? "grid-cols-[24px_2fr_1fr_minmax(90px,max-content)]"
+        : "grid-cols-[24px_32px_2fr_1fr_minmax(90px,max-content)]";
 });
 
 // 計算顯示的任務列表
