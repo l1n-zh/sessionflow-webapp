@@ -5,9 +5,9 @@ export interface TaskResponse {
   id: number;
   title: string;
   tags: TagResponse[];
-  dueTime?: string;
-  completedAt?: string;
-  note?: string;
+  dueAt?: string | null;
+  completedAt?: string | null;
+  note?: string | null;
   status: 'PENDING' | 'COMPLETE';
 }
 
@@ -15,6 +15,6 @@ export interface TaskResponse {
 export interface TaskRequest {
   title: string;
   tagIds?: number[];
-  dueTime?: string;
+  dueAt?: string;
   note?: string;
 } 

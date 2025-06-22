@@ -67,7 +67,7 @@ onUnmounted(() => {
 const formattedElapsedTime = computed(() => {
   if (!props.session) return '00:00:00';
 
-  const elapsedSeconds = Math.floor((now.value.getTime() - props.session.startTime.getTime()) / 1000);
+  const elapsedSeconds = Math.floor((now.value.getTime() - props.session.startAt.getTime()) / 1000);
   const hours = Math.floor(elapsedSeconds / 3600);
   const minutes = Math.floor((elapsedSeconds % 3600) / 60);
   const seconds = elapsedSeconds % 60;

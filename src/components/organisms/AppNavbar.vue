@@ -89,7 +89,7 @@ const { openEndModal } = useSessionModals();
 
 const navigationItems = [
   { name: '任務', path: '/tasks' },
-  { name: '排程', path: '/schedule' },
+  // { name: '排程', path: '/schedule' },
   { name: '紀錄', path: '/session-records' },
 ];
 </script> 

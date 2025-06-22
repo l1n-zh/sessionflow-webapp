@@ -2,7 +2,7 @@
 export interface TaskFormData {
   title: string;
   tagIds: number[];
-  dueTime?: string;
+  dueAt?: string;
   note: string;
 }
 

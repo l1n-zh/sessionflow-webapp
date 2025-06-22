@@ -5,17 +5,11 @@
 export interface SessionRecordResponse {
   id: number;
   title: string;
-  taskId?: number;
+  taskId?: number | null;
   startAt: string; // ISO 8601 string
   endAt: string; // ISO 8601 string
-  plannedNote?: string;
-  completionNote?: string;
-}
-
-// API Request Types
-export interface SessionRecordCreateRequest {
-  sessionId: number;
-  completionNote?: string;
+  plannedNote?: string | null;
+  completionNote?: string | null;
 }
 
 export interface SessionRecordUpdateRequest {

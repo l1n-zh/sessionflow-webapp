@@ -1,9 +1,13 @@
 name: Build and Release Frontend
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:
-      - "v*.*"
+      - "v*"
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,8 +19,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Zip dist
-        run: zip -r sessionflowapp.zip dist
+      - name: Zip dist/sessionflowapp
+        run: cd dist && zip -r ../sessionflowapp.zip sessionflowapp
 
       - name: Create Release
         uses: softprops/action-gh-release@v1

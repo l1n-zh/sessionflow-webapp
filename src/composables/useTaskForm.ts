@@ -7,7 +7,7 @@ export function useTaskForm(initialTask?: Task) {
   const formData = ref<TaskFormData>({
     title: '',
     tagIds: [],
-    dueTime: '',
+    dueAt: '',
     note: ''
   });
 
@@ -34,10 +34,10 @@ export function useTaskForm(initialTask?: Task) {
       errors.value.note = '備註不能超過 2000 字元';
     }
     
-    if (formData.value.dueTime) {
-      const dueDate = new Date(formData.value.dueTime);
+    if (formData.value.dueAt) {
+      const dueDate = new Date(formData.value.dueAt);
       if (dueDate < new Date()) {
-        errors.value.dueTime = '截止日期不能早於現在';
+        errors.value.dueAt = '截止日期不能早於現在';
       }
     }
   };
@@ -49,7 +49,7 @@ export function useTaskForm(initialTask?: Task) {
       const submitData: TaskFormData = {
         title: formData.value.title.trim(),
         tagIds: formData.value.tagIds,
-        dueTime: formData.value.dueTime || undefined,
+        dueAt: formData.value.dueAt || undefined,
         note: formData.value.note?.trim()
       };
       
@@ -63,14 +63,14 @@ export function useTaskForm(initialTask?: Task) {
       formData.value = {
         title: initialTask.title,
         tagIds: initialTask.tags.map(tag => tag.id),
-        dueTime: initialTask.dueTime ? initialTask.dueTime.toISOString().slice(0, 16) : '',
+        dueAt: initialTask.dueAt ? initialTask.dueAt.toISOString().slice(0, 16) : '',
         note: initialTask.note || ''
       };
     } else {
       formData.value = {
         title: '',
         tagIds: [],
-        dueTime: '',
+        dueAt: '',
         note: ''
       };
     }

@@ -1,6 +1,6 @@
 import type {
-    SessionCreateRequest,
-    SessionEndRequest,
+    SessionRequest,
+    SessionRecordCreateRequest,
     SessionResponse
 } from '@/types/api/session';
 import type { SessionRecordResponse } from '@/types/api/sessionRecord';
@@ -21,7 +21,7 @@ export const getActiveSessions = (): Promise<SessionResponse[]> => {
  * @param data - The data required to create the session.
  * @returns A promise that resolves to the newly created session.
  */
-export const startSession = (data: SessionCreateRequest): Promise<SessionResponse> => {
+export const startSession = (data: SessionRequest): Promise<SessionResponse> => {
     return api.post('/sessions', data);
 };
 
@@ -34,7 +34,7 @@ export const startSession = (data: SessionCreateRequest): Promise<SessionRespons
  */
 export const endSession = (
     sessionId: number,
-    data: SessionEndRequest
+    data: SessionRecordCreateRequest
 ): Promise<SessionRecordResponse> => {
     return api.post(`/sessions/${sessionId}/end`, data);
 }; 

@@ -15,6 +15,17 @@ export const formatDueDate = (dateInput: string | Date) => {
   }
 };
 
+export const formatDateTime = (dateInput: string | Date) => {
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  return date.toLocaleString('zh-TW', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
 export const formatCompletedDate = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('zh-TW', {

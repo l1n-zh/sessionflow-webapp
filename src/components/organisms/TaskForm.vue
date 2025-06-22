@@ -27,11 +27,11 @@
 
     <!-- Due Date -->
     <FormField
-      id="dueTime"
+      id="dueAt"
       label="截止日期"
       type="datetime-local"
-      v-model="formData.dueTime"
-      :error="errors.dueTime"
+      v-model="formData.dueAt"
+      :error="errors.dueAt"
       help="選擇任務的截止日期和時間"
     />
 

@@ -8,14 +8,12 @@ export const sessionRecordApi = {
     endDate?: string;
     taskId?: number;
   }): Promise<SessionRecordResponse[]> {
-    const response = await api.get('/session-records', { params });
-    return response.data;
+    return api.get('/session-records', { params }) as Promise<SessionRecordResponse[]>;
   },
 
   // Update a session record
   async updateSessionRecord(id: number, data: SessionRecordUpdateRequest): Promise<SessionRecordResponse> {
-    const response = await api.put(`/session-records/${id}`, data);
-    return response.data;
+    return api.put(`/session-records/${id}`, data) as Promise<SessionRecordResponse>;
   },
 
   // Delete a session record

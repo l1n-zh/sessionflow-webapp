@@ -131,8 +131,8 @@ const animatingTaskIds = ref<Map<number, "completing" | "reopening">>(
 
 const gridLayoutClass = computed(() => {
     return showCompleted.value
-        ? "grid-cols-[24px_2fr_1fr_minmax(120px,max-content)]"
-        : "grid-cols-[24px_32px_2fr_1fr_minmax(120px,max-content)]";
+        ? "grid-cols-[24px_2fr_1fr_minmax(90px,max-content)]"
+        : "grid-cols-[24px_32px_2fr_1fr_minmax(90px,max-content)]";
 });
 
 // 計算顯示的任務列表
@@ -162,12 +162,12 @@ const displayTasks = computed(() => {
     if (sortByDueDate.value && !showCompleted.value) {
         return [...filteredTasks].sort((a, b) => {
             // 沒有截止時間的排在最後
-            if (!a.dueTime && !b.dueTime) return 0;
-            if (!a.dueTime) return 1;
-            if (!b.dueTime) return -1;
+            if (!a.dueAt && !b.dueAt) return 0;
+            if (!a.dueAt) return 1;
+            if (!b.dueAt) return -1;
 
             // 按截止時間由近到遠排序
-            return a.dueTime.getTime() - b.dueTime.getTime();
+            return a.dueAt.getTime() - b.dueAt.getTime();
         });
     }
 

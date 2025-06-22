@@ -1,5 +1,5 @@
 {
-    "name": "sessionflow-frontend",
+    "name": "sessionflow-webapp",
     "private": true,
     "version": "0.0.0",
     "type": "module",
@@ -28,6 +28,7 @@
         "@types/node": "^22.15.19",
         "@vitejs/plugin-vue": "^5.2.3",
         "@vue/tsconfig": "^0.7.0",
+        "openapi-typescript": "^7.8.0",
         "tailwindcss": "^4.1.7",
         "typescript": "~5.8.3",
         "vite": "^6.3.5",

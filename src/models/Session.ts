@@ -9,7 +9,7 @@ import type { Task } from './Task';
 export class Session {
     id: number;
     taskId?: number;
-    startTime: Date;
+    startAt: Date;
     name: string;
     planningNotes?: string;
     endReminder?: Date;
@@ -21,13 +21,13 @@ export class Session {
 
     constructor(dto: SessionResponse, task: Task) {
         this.id = dto.id;
-        this.taskId = dto.taskId;
-        this.startTime = new Date(dto.startTime);
+        this.taskId = dto.taskId || undefined;
+        this.startAt = new Date(dto.startAt);
         this.endReminder = dto.endReminder ? new Date(dto.endReminder) : undefined;
         
         // Map API fields to domain model fields for UI consistency
         this.name = dto.title;
-        this.planningNotes = dto.note;
+        this.planningNotes = dto.note || undefined;
 
         this.taskTitle = task.title;
     }

@@ -2,10 +2,10 @@
 export interface ScheduleEntryResponse {
   id: number;
   title: string;
-  taskId?: number;
+  taskId?: number | null;
   startAt: string;
   endAt: string;
-  note?: string;
+  note?: string | null;
 }
 
 // API Request Types
