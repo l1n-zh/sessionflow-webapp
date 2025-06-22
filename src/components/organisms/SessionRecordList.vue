@@ -9,10 +9,10 @@
             <div class="min-w-0">
                 <button
                     class="hover:text-primary transition-colors flex items-center gap-1"
-                    @click="toggleSort('startTime')"
+                    @click="toggleSort('startAt')"
                 >
                     <span>開始時間</span>
-                    <BaseIcon :icon="ICONS.CHEVRON_UP" size="sm" :class="getSortIconClass('startTime')" />
+                    <BaseIcon :icon="ICONS.CHEVRON_UP" size="sm" :class="getSortIconClass('startAt')" />
                 </button>
             </div>
             <div class="min-w-0">
@@ -59,7 +59,7 @@ import SessionRecordItem from "./SessionRecordItem.vue";
 import BaseIcon from "@/components/atoms/BaseIcon.vue";
 import { ICONS } from "@/constants/icons";
 
-type SortKey = 'startTime' | 'duration';
+type SortKey = 'startAt' | 'duration';
 type SortDirection = 'asc' | 'desc';
 
 interface Props {
@@ -88,8 +88,8 @@ const sortedRecords = computed(() => {
     return [...props.records].sort((a, b) => {
         const key = sortKey.value as SortKey;
         let comparison = 0;
-        if (key === 'startTime') {
-            comparison = a.startTime.getTime() - b.startTime.getTime();
+        if (key === 'startAt') {
+            comparison = a.startAt.getTime() - b.startAt.getTime();
         } else if (key === 'duration') {
             comparison = a.duration - b.duration;
         }

@@ -11,7 +11,7 @@
     "title": "Title",
     "description": "Description",
     "estimatedDuration": "Estimated Duration",
-    "dueTime": "Due Time",
+    "dueAt": "Due At",
     "status": "Status",
     "tags": "Tags",
     "active": "Active",
@@ -28,7 +28,7 @@
   "session": {
     "date": "Date",
     "startTime": "Start Time",
-    "endTime": "End Time",
+    "endAt": "End At",
     "create": "Create Session",
     "view": "View Session Logs",
     "start": "Start",

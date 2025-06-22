@@ -2,6 +2,6 @@
 export interface ErrorResponse {
   code: string;
   message: string;
-  details: string;
+  details?: string;
   timestamp: string;
 } 

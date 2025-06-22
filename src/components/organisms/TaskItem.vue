@@ -42,7 +42,7 @@
         <!-- 截止時間 -->
         <div class="min-w-0">
             <span
-                v-if="task.dueTime"
+                v-if="task.dueAt"
                 :class="dueDateClasses"
                 class="text-sm"
             >
@@ -104,14 +104,14 @@ const handleSessionStart = () => {
 
 // 截止日期格式化
 const formattedDueDate = computed(() => {
-    return props.task.dueTime ? formatDueDate(props.task.dueTime) : "";
+    return props.task.dueAt ? formatDueDate(props.task.dueAt) : "";
 });
 
 // 截止日期樣式
 const dueDateClasses = computed(() => {
-    if (!props.task.dueTime) return "text-neutral-500";
+    if (!props.task.dueAt) return "text-neutral-500";
 
-    const date = props.task.dueTime;
+    const date = props.task.dueAt;
     const now = new Date();
     const diffTime = date.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

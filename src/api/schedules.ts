@@ -4,10 +4,9 @@ import { api } from '.';
 export const scheduleApi = {
   // Get schedule entries within date range
   async getScheduleEntries(startDate: string, endDate: string): Promise<ScheduleEntryResponse[]> {
-    const response = await api.get('/schedule-entries', {
+    return api.get('/schedule-entries', {
       params: { startDate, endDate }
     });
-    return response.data;
   },
 
   // Create a new schedule entry
@@ -19,7 +18,5 @@ export const scheduleApi = {
   // Delete a schedule entry
   deleteScheduleEntry: async (id: number): Promise<void> => {
     await api.delete(`/schedule-entries/${id}`);
-  },
-
-  getSchedules: (): Promise<ScheduleEntryResponse[]> => api.get('/schedules')
+  }
 }; 

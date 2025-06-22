@@ -4,7 +4,7 @@ import { Session } from '@/models/Session';
 import { getActiveSessions, startSession, endSession } from '@/api/sessions';
 import { useTaskStore } from './tasks';
 import type { SessionCreateFormData, SessionEndFormData } from '@/types/ui/forms';
-import type { SessionCreateRequest } from '@/types/api/session';
+import type { SessionRequest } from '@/types/api/session';
 
 export const useSessionStore = defineStore('sessions', () => {
     const activeSessions = ref<Session[]>([]);
@@ -48,7 +48,7 @@ export const useSessionStore = defineStore('sessions', () => {
         }
 
         try {
-            const request: SessionCreateRequest = {
+            const request: SessionRequest = {
                 taskId,
                 title: formData.name,
                 note: formData.planningNotes,

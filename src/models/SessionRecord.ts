@@ -5,8 +5,8 @@ export class SessionRecord {
     title: string;
     taskId?: number | null;
     taskTitle?: string;
-    startTime: Date;
-    endTime: Date;
+    startAt: Date;
+    endAt: Date;
     plannedNote?: string | null;
     completionNote?: string | null;
 
@@ -15,14 +15,14 @@ export class SessionRecord {
         this.title = dto.title;
         this.taskId = dto.taskId;
         this.taskTitle = taskTitle;
-        this.startTime = new Date(dto.startAt);
-        this.endTime = new Date(dto.endAt);
+        this.startAt = new Date(dto.startAt);
+        this.endAt = new Date(dto.endAt);
         this.plannedNote = dto.plannedNote;
         this.completionNote = dto.completionNote;
     }
 
     get duration(): number {
-        return this.endTime.getTime() - this.startTime.getTime();
+        return this.endAt.getTime() - this.startAt.getTime();
     }
 
     get formattedDuration(): string {

@@ -18,7 +18,7 @@
         <!-- 開始時間 -->
         <div class="min-w-0">
             <span class="text-sm text-neutral-600 whitespace-pre-line ">
-                {{ formattedStartTime }}
+                {{ formattedStartAt }}
             </span>
         </div>
 
@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
     // No specific defaults needed for now, but added for consistency
 });
 
-const formattedStartTime = computed(() => {
-    return formatDateTime(props.record.startTime);
+const formattedStartAt = computed(() => {
+    return formatDateTime(props.record.startAt);
 });
 </script> 

@@ -5,10 +5,10 @@
 export interface SessionResponse {
   id: number;
   title: string;
-  taskId?: number;
-  note?: string;
-  endReminder?: string; // ISO 8601 string
-  startTime: string; // ISO 8601 string
+  taskId?: number | null;
+  startAt: string; // ISO 8601 string
+  endReminder?: string | null; // ISO 8601 string
+  note?: string | null;
 }
 
 /**
@@ -23,24 +23,10 @@ export interface SessionRequest {
 }
 
 /**
- * Represents the payload for creating a new session.
- * Corresponds to `SessionCreateRequest` in the API documentation.
- */
-export interface SessionCreateRequest {
-  title: string;
-  taskId?: number;
-  note?: string;
-  endReminder?: string; // ISO 8601 string
-}
-
-/**
  * Represents the payload for ending a session.
- * This is derived from the body of the `POST /api/sessions/{id}/end` endpoint.
- * The API doc specifies `SessionRecordCreateRequest`, but for clarity in the frontend,
- * we'll use `SessionEndRequest`.
- * The `mark_task_as_complete` logic will be handled separately in the store.
+ * Corresponds to `SessionRecordCreateRequest` in the API documentation.
  */
-export interface SessionEndRequest {
-    sessionId: number; // it is a little bit weird, but it is the way the API is designed
-    completionNote?: string;
+export interface SessionRecordCreateRequest {
+  sessionId: number;
+  completionNote?: string;
 } 
