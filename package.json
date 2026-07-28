@@ -12,7 +12,7 @@
         "@stagewise-plugins/vue": "^0.4.6",
         "@stagewise/toolbar-vue": "^0.4.8",
         "@vueuse/core": "^13.3.0",
-        "axios": "1.12.0",
+        "axios": "1.18.0",
         "dayjs": "^1.11.13",
         "pinia": "^3.0.2",
         "vue": "^3.5.13",
@@ -24,15 +24,15 @@
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^6.7.2",
         "@mdi/font": "^7.4.47",
-        "@tailwindcss/vite": "^4.1.7",
+        "@tailwindcss/vite": "^4.3.3",
         "@types/node": "^22.15.19",
-        "@vitejs/plugin-vue": "^5.2.3",
+        "@vitejs/plugin-vue": "^6.0.8",
         "@vue/tsconfig": "^0.7.0",
         "openapi-typescript": "^7.8.0",
         "tailwindcss": "^4.1.7",
         "typescript": "~5.8.3",
-        "vite": "^6.4.1",
-        "vite-plugin-vue-devtools": "^7.7.7",
+        "vite": "^8.1.5",
+        "vite-plugin-vue-devtools": "^8.2.1",
         "vite-plugin-vuetify": "^2.1.1",
         "vue-tsc": "^2.2.8"
     }
